@@ -1,0 +1,29 @@
+{
+  "name": "cefalo-travel-connect-app-server",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Cefalo Travel Connect App Server",
+  "main": "server.ts",
+  "scripts": {
+    "dev": "nodemon --watch src --ext ts --exec \"tsx src/server.ts\"",
+    "start": "node dist/server.js",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "Umme Kulsum Tumpa",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.2",
+    "@types/node": "^22.15.21",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.4"
+  }
+}
