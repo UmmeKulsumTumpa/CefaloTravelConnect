@@ -1,0 +1,38 @@
+import type { Knex } from "knex";
+import type { User, IUserRepository } from "../../interface/IUserRepository.js";
+import { ROLES } from "./User.constant.js";
+
+export class UserRepository implements IUserRepository {
+    constructor(private knex: Knex) {};
+
+    async create(user: {
+        username: string;
+        email: string;
+        password_hash: string;
+    }): Promise<number> {
+        const [id] = await this.knex('users').insert({
+            username: user.username,
+            email: user.email,
+            password_hash: user.password_hash,
+        }).returning('user_id');
+
+        return id.user_id;
+    };
+
+    async findUsers(filters: {
+        id?: number;
+        username?: string;
+        email?: string;
+        search?: string
+    }): Promise<User[]> {
+        const query = this.knex('users');
+
+        if(filters.id) query.where({user_id: filters.id});
+        if(filters.username) query.whereILike('username', `%${filters.username}%`);
+        if(filters.email) query.whereILike({email: filters.email});
+
+        // search ta implement kora baki, otar logic pore likhbo
+
+        return query;
+    }
+}

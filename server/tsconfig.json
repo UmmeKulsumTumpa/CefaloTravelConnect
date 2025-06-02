@@ -13,6 +13,6 @@
     "noEmitOnError": true,
     "sourceMap": true 
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "knexfile.ts"],
+  "include": ["src/**/*", "src/knexfile.ts"],
+  "exclude": ["node_modules"],
 }
