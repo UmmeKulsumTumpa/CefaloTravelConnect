@@ -7,7 +7,7 @@ const config: { [key: string]: Knex.Config } = {
     client: 'postgresql',
     connection: process.env.DATABASE_URL,
     migrations: {
-      directory: './src/migrations',
+      directory: './migrations',
     },
   },
 };

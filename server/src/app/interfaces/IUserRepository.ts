@@ -19,9 +19,9 @@ export interface User {
 
 export interface IUserRepository {
     create(user: {
-        username: string;
         email: string;
         password_hash: string;
+        role?: Role;
     }): Promise<number>;
     // findByEmail(email: string): Promise<User | undefined>;
     // findById(id: number): Promise<User | undefined>;

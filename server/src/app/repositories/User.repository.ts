@@ -6,14 +6,15 @@ export class UserRepository implements IUserRepository {
     constructor(private knex: Knex) {};
 
     async create(user: {
-        username: string;
         email: string;
         password_hash: string;
+        role?: string;
     }): Promise<number> {
         const [id] = await this.knex('users').insert({
-            username: user.username,
             email: user.email,
             password_hash: user.password_hash,
+            role: user.role,
+            username: user.email.split('@')[0],
         }).returning('user_id');
 
         return id.user_id;
