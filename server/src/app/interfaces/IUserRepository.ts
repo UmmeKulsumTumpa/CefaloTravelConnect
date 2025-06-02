@@ -1,4 +1,4 @@
-import type { Role } from '../modules/User/User.constant.js';
+import type { Role } from '../constants/User.constant.js';
 
 export interface User {
     user_id: number;

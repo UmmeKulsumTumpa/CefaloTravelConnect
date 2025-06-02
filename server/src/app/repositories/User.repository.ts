@@ -1,6 +1,6 @@
 import type { Knex } from "knex";
-import type { User, IUserRepository } from "../../interface/IUserRepository.js";
-import { ROLES } from "./User.constant.js";
+import type { User, IUserRepository } from "../interfaces/IUserRepository.js";
+import { ROLES } from "../constants/User.constant.js";
 
 export class UserRepository implements IUserRepository {
     constructor(private knex: Knex) {};
