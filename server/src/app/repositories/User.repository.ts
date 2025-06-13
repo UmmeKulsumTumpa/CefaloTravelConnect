@@ -1,5 +1,5 @@
 import type { Knex } from "knex";
-import type { User, IUserRepository } from "../interfaces/IUserRepository.js";
+import type { User, UserFilter, IUserRepository } from "../interfaces/IUserRepository.js";
 import { ROLES } from "../constants/User.constant.js";
 
 export class UserRepository implements IUserRepository {
@@ -8,32 +8,58 @@ export class UserRepository implements IUserRepository {
     async create(user: {
         email: string;
         password_hash: string;
-        role?: string;
     }): Promise<number> {
         const [id] = await this.knex('users').insert({
             email: user.email,
             password_hash: user.password_hash,
-            role: user.role,
             username: user.email.split('@')[0],
+            is_active: true,
+            created_at: this.knex.fn.now(),
+            updated_at: this.knex.fn.now(),
         }).returning('user_id');
 
         return id.user_id;
     };
 
-    async findUsers(filters: {
-        id?: number;
-        username?: string;
-        email?: string;
-        search?: string
-    }): Promise<User[]> {
-        const query = this.knex('users');
+    async findUsers(filters: UserFilter): Promise<User[]> {
+        let query = this.knex('users');
 
-        if(filters.id) query.where({user_id: filters.id});
-        if(filters.username) query.whereILike('username', `%${filters.username}%`);
-        if(filters.email) query.whereILike({email: filters.email});
+        if(filters.id) query = query.where('user_id', filters.id);
+        if(filters.username) query = query.where('username', filters.username);
+        if(filters.email) query = query.where('email', filters.email);
+        if(filters.search) {
+            query = query
+                        .where('username', 'like', `%${filters.search}%`)
+                        .orWhere('email', 'like', `%${filters.search}%`)
+                        .orWhere('first_name', 'like', `%${filters.search}%`)
+                        .orWhere('last_name', 'like', `%${filters.search}%`);
+        }
 
-        // search ta implement kora baki, otar logic pore likhbo
+        return query.select();
+    };
 
-        return query;
-    }
+    async findById(id: number): Promise<User | undefined> {
+        return this.knex('users')
+            .where('user_id', id)
+            .first();
+    };
+
+    async update(id: number, user: Partial<User>): Promise<boolean> {
+        const result = await this.knex('users')
+            .where('user_id', id)
+            .update({
+                ...user,
+                updated_at: this.knex.fn.now(),
+            });
+
+        return result > 0;
+    };
+
+    async delete(id: number): Promise<boolean> {
+        const result = await this.knex('users')
+            .where('user_id', id)
+            .update({ is_active: false});
+
+        return result > 0;
+    };
 }

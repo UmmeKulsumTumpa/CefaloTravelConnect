@@ -16,6 +16,8 @@ export interface UpdateUserDto {
     email?: string;
     first_name?: string;
     last_name?: string;
-    age?: string;
-    role?: string;
+    age?: number;
+    role?: Role;
+    profile_picture?: string;
+    bio?: string;
 }

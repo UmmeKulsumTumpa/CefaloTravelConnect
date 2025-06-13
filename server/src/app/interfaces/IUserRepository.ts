@@ -17,23 +17,22 @@ export interface User {
     updated_at: Date;
 }
 
+export type UserFilter = {
+    id?: number;
+    username?: string;
+    email?: string;
+    search?: string;
+}
+
 export interface IUserRepository {
     create(user: {
         email: string;
         password_hash: string;
-        role?: Role;
     }): Promise<number>;
     // findByEmail(email: string): Promise<User | undefined>;
-    // findById(id: number): Promise<User | undefined>;
-    findUsers(filters: { 
-        id?: number; 
-        username?: string; 
-        email?: string; 
-        search?: string 
-    }): Promise<User[]>;
-    // update(id: number, user: Partial<User>): Promise<boolean>;
+    findById(id: number): Promise<User | undefined>;
+    findUsers(filters: UserFilter): Promise<User[]>;
+    update(id: number, user: Partial<User>): Promise<boolean>;
     // updateLastLogin(id: number, lastLogin: Date): Promise<boolean>;
-    // delete(id: number): Promise<boolean>;
+    delete(id: number): Promise<boolean>;
 }
-
-// user and filter er separate 2 ta type create korte hbe------

@@ -11,7 +11,11 @@
     "strict": true,
     "skipLibCheck": true,
     "noEmitOnError": true,
-    "sourceMap": true 
+    "sourceMap": true,
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": false,
+    "resolveJsonModule": true,
   },
   "include": ["src/**/*", "src/knexfile.ts"],
   "exclude": ["node_modules"],
