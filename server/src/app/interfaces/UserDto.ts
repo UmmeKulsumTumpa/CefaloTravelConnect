@@ -21,3 +21,8 @@ export interface UpdateUserDto {
     profile_picture?: string;
     bio?: string;
 }
+
+export interface ChangePasswordDto {
+    oldPassword: string;
+    newPassword: string;
+}

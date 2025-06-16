@@ -1,5 +1,5 @@
 import type { IUserRepository, User } from "../interfaces/IUserRepository.js";
-import type { SignupDto, UpdateUserDto } from "../interfaces/UserDto.js";
+import type { SignupDto, UpdateUserDto, ChangePasswordDto } from "../interfaces/UserDto.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { Role } from "../constants/User.constant.js";
@@ -86,6 +86,22 @@ export class UserService{
         }
 
         return this.userRepository.update(userId, dto);
+    }
+
+    async changePassword(userId: number, dto: ChangePasswordDto): Promise<boolean> {
+        const user = await this.userRepository.findById(userId);
+
+        if(!user) return false;
+
+        const hasMatched = await bcrypt.compare(dto.oldPassword, user.password_hash);
+
+        if(!hasMatched) return false;
+
+        const newHasPassword = await bcrypt.hash(dto.newPassword, 10);
+
+        const updateResult =  this.userRepository.update(userId, {password_hash: newHasPassword});
+
+        return updateResult;
     }
 
     async deleteUser(userId: number, requesterId: number, requesterRole: string): Promise<boolean> {

@@ -15,6 +15,7 @@ router.post('/signup', asyncHandler(userController.signup.bind(userController)))
 router.post('/signin', asyncHandler(userController.signin.bind(userController)));
 router.get('/me', authenticateToken, asyncHandler(userController.getMe.bind(userController)));
 router.put('/me', authenticateToken, asyncHandler(userController.updateMe.bind(userController)));
+router.post('/change-password', authenticateToken, asyncHandler(userController.changePassword.bind(userController)));
 router.delete('/', authenticateToken, asyncHandler(userController.deleteUser.bind(userController)));
 
 export const UserRouter = router;

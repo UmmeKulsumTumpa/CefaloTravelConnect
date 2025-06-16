@@ -1,7 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { UserService } from "../services/User.service.js";
-import { SignupDto, UpdateUserDto } from "../interfaces/UserDto.js";
-import { log } from "console";
+import { SignupDto, UpdateUserDto, ChangePasswordDto } from "../interfaces/UserDto.js";
 
 export class UserController {
     constructor (private userService: UserService){};
@@ -50,6 +49,20 @@ export class UserController {
             next(error);
         }
     };
+
+    async changePassword(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const userId = (req as any).user.user_id;
+            const dto: ChangePasswordDto = req.body;
+            const success = await this.userService.changePassword(userId, dto);
+
+            if(!success) res.status(400).json({ success: success, message: "Password Change Failed"});
+
+            res.status(200).json({ success: success, message: "Changed password Successfully"});
+        } catch (error){
+            next(error);
+        }
+    }
 
     async deleteUser(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
