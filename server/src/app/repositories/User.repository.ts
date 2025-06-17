@@ -62,4 +62,24 @@ export class UserRepository implements IUserRepository {
 
         return result > 0;
     };
+
+    async saveRefreshToken(userId: number, token: string, expiresAt: Date): Promise<void> {
+        await this.knex('refresh_tokens').insert({
+            user_id: userId,
+            token,
+            expires_at: expiresAt,
+        });
+    }
+
+    async deleteRefreshToken(token: string): Promise<void> {
+        await this.knex('refresh_tokens').where({ token }).del();
+    }
+
+    async findRefreshToken(token: string): Promise<{ id: number, user_id: number, token: string, expires_at: Date } | undefined> {
+        return this.knex('refresh_tokens').where({ token }).first();
+    }
+
+    async deleteAllRefreshTokensForUser(userId: number): Promise<void> {
+        await this.knex('refresh_tokens').where({ user_id: userId }).del();
+    }
 }

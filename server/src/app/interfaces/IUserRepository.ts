@@ -35,4 +35,8 @@ export interface IUserRepository {
     update(id: number, user: Partial<User>): Promise<boolean>;
     // updateLastLogin(id: number, lastLogin: Date): Promise<boolean>;
     delete(id: number): Promise<boolean>;
+    saveRefreshToken(userId: number, token: string, expiresAt: Date): Promise<void>;
+    deleteRefreshToken(token: string): Promise<void>;
+    findRefreshToken(token: string): Promise<{ id: number, user_id: number, token: string, expires_at: Date } | undefined>;
+    deleteAllRefreshTokensForUser(userId: number): Promise<void>;
 }

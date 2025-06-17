@@ -1,17 +1,16 @@
-import type { IUserRepository, User } from "../interfaces/IUserRepository.js";
+import type { IUserRepository, User, UserFilter } from "../interfaces/IUserRepository.js";
 import type { SignupDto, UpdateUserDto, ChangePasswordDto } from "../interfaces/UserDto.js";
 import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import bcrypt from "bcryptjs";
-import { Role } from "../constants/User.constant.js";
-import envConfig from "../config/env.config.js";
-import jwtConfig from "../config/jwt.config.js";
+import { ROLES } from "../constants/User.constant.js";
+import authConfig from "../config/auth.config.js";
 
 export class UserService{
 
     constructor(private userRepository: IUserRepository){};
 
-    async signup(dto: SignupDto): Promise<string> {
-        // need to implement validation for dto, will do later
+    async signup(dto: SignupDto): Promise<{ accessToken: string, refreshToken: string }> {
         const { email, password } = dto;
 
         const existingUser = await this.userRepository.findUsers({ email });
@@ -26,16 +25,26 @@ export class UserService{
             password_hash: passwordHash,
         });
 
-        const token = jwt.sign(
-            { user_id: String(userId), email },
-            envConfig.JWT_SECRET,
-            { expiresIn: jwtConfig.EXPIRATION } as jwt.SignOptions,
+        // Fetch the user to get the role
+        const user = await this.userRepository.findById(userId);
+        if (!user || !user.role) {
+            throw new Error("User role is not set. Please contact admin.");
+        }
+
+        const accessToken = jwt.sign(
+            { user_id: String(userId), email, role: user.role },
+            authConfig.JWT_SECRET,
+            { expiresIn: authConfig.JWT_EXPIRATION } as jwt.SignOptions,
         );
 
-        return token;
+        // Generate refresh token
+        const refreshToken = crypto.randomBytes(64).toString('hex');
+        const refreshExpires = new Date(Date.now() + authConfig.REFRESH_TOKEN_EXPIRATION_DAYS * 24 * 60 * 60 * 1000);
+        await this.userRepository.saveRefreshToken(userId, refreshToken, refreshExpires);
+        return { accessToken, refreshToken };
     }
 
-    async signin(email: string, password: string): Promise<string> {
+    async signin(email: string, password: string): Promise<{ accessToken: string, refreshToken: string }> {
         const users = await this.userRepository.findUsers({ email });
         if (users.length === 0) {
             throw new Error("User not found with this email");
@@ -47,42 +56,60 @@ export class UserService{
             throw new Error("User password for this email is incorrect");
         }
 
-        const token = jwt.sign(
+        if (!user.role) {
+            throw new Error("User role is not set. Please contact admin.");
+        }
+
+        const accessToken = jwt.sign(
             { user_id: String(user.user_id), email: user.email, role: user.role },
-            envConfig.JWT_SECRET,
-            { expiresIn: jwtConfig.EXPIRATION } as jwt.SignOptions,
+            authConfig.JWT_SECRET,
+            { expiresIn: authConfig.JWT_EXPIRATION } as jwt.SignOptions,
         );
 
-        return token;
+        // Generate refresh token
+        const refreshToken = crypto.randomBytes(64).toString('hex');
+        const refreshExpires = new Date(Date.now() + authConfig.REFRESH_TOKEN_EXPIRATION_DAYS * 24 * 60 * 60 * 1000);
+        await this.userRepository.saveRefreshToken(user.user_id, refreshToken, refreshExpires);
+        return { accessToken, refreshToken };
     }
 
-    // might need a getUsers method later, for admin to get all users
+    // async getMe(userId: number): Promise<User> {
+    //     const user = await this.userRepository.findById(userId);
+    //     if (!user) {
+    //         throw new Error("User not found");
+    //     }
+    //     if (!user.is_active) {
+    //         throw new Error("User is inactive");
+    //     }
+    //     return user;
+    // }
 
-    async getMe(userId: number): Promise<User> {
+    async updateMe(userId: number, dto: UpdateUserDto, requester: { user_id: number, role: string }): Promise<boolean> {
+
+        console.log(userId, requester.user_id);
+        
+        
+        if (!userId || typeof userId !== 'number') {
+            throw new Error("Invalid user id");
+        }
+        if (!requester || typeof requester.user_id !== 'number' || !requester.role) {
+            throw new Error("Unauthorized: Invalid requester info");
+        }
+
+        if (requester.role !== ROLES.ADMIN && userId !== requester.user_id) {
+            throw new Error("Unauthorized: You can only update your own profile");
+        }
+
+        if (dto.role && requester.role !== ROLES.ADMIN) {
+            throw new Error("Unauthorized: Only admin can change user roles");
+        }
+
         const user = await this.userRepository.findById(userId);
         if (!user) {
             throw new Error("User not found");
         }
         if (!user.is_active) {
             throw new Error("User is inactive");
-        }
-        return user;
-    }
-
-    async updateMe(userId: number, dto: UpdateUserDto, requesterRole: string): Promise<boolean> {
-        // Validate the dto, will do later
-
-        const user = await this.userRepository.findById(userId);
-        if (!user) {
-            throw new Error("User not found");
-        }
-
-        if(requesterRole !== 'admin' && requesterRole !== user.role) {
-            throw new Error("Unauthorized: You can only update your own profile");
-        }
-
-        if(dto.role && requesterRole !== 'admin') {
-            throw new Error("Unauthorized: Only admin can change user roles");
         }
 
         return this.userRepository.update(userId, dto);
@@ -121,4 +148,69 @@ export class UserService{
         return this.userRepository.delete(userId);
     }
 
+    async signout(refreshToken: string): Promise<void> {
+        await this.userRepository.deleteRefreshToken(refreshToken);
+    }
+
+    async refresh(refreshToken: string): Promise<{ accessToken: string, refreshToken: string }> {
+        const tokenRecord = await this.userRepository.findRefreshToken(refreshToken);
+        if (!tokenRecord || tokenRecord.expires_at < new Date()) {
+            throw new Error("Invalid or expired refresh token");
+        }
+        const user = await this.userRepository.findById(tokenRecord.user_id);
+        if (!user) throw new Error("User not found");
+        
+        const accessToken = jwt.sign(
+            { user_id: String(user.user_id), email: user.email, role: user.role },
+            authConfig.JWT_SECRET,
+            { expiresIn: authConfig.JWT_EXPIRATION } as jwt.SignOptions,
+        );
+        
+        await this.userRepository.deleteRefreshToken(refreshToken);
+        
+        const newRefreshToken = crypto.randomBytes(64).toString('hex');
+        const refreshExpires = new Date(Date.now() + authConfig.REFRESH_TOKEN_EXPIRATION_DAYS * 24 * 60 * 60 * 1000);
+        await this.userRepository.saveRefreshToken(user.user_id, newRefreshToken, refreshExpires);
+        return { accessToken, refreshToken: newRefreshToken };
+    }
+
+    async changeUserRole(userId: number, role: string, requesterRole: string): Promise<boolean> {
+        const validRoles = Object.values(ROLES);
+        if (!validRoles.includes(role as any)) {
+            throw new Error('Invalid role');
+        }
+        if (requesterRole !== ROLES.ADMIN) {
+            throw new Error('Unauthorized: Only admin can change user roles');
+        }
+        const user = await this.userRepository.findById(userId);
+        if (!user) {
+            throw new Error('User not found');
+        }
+        return this.userRepository.update(userId, { role: role as typeof ROLES[keyof typeof ROLES] });
+    }
+
+    async getUsers(filters: UserFilter, requester: any): Promise<Partial<User>[]> {
+        if (!requester) throw new Error('Unauthorized');
+        if (!requester.role) throw new Error('Unauthorized: User role is missing in token.');
+        const isAdmin = requester.role === ROLES.ADMIN;
+
+        console.log(`UserService.getUsers called with filters: ${JSON.stringify(filters)} and requester: ${JSON.stringify(requester)}`);
+        
+        
+        if (!isAdmin) {
+            if (filters.id && Number(filters.id) !== Number(requester.user_id)) {
+                throw new Error('Forbidden: Cannot view other users');
+            }
+            if (!filters.id) {
+                filters.id = requester.user_id;
+            }
+        }
+        const users = await this.userRepository.findUsers(filters);
+        
+        return users.map(user => {
+            if (isAdmin) return user;
+            const { password_hash, email, ...publicProfile } = user;
+            return publicProfile;
+        });
+    }
 }
