@@ -92,11 +92,11 @@ export class UserService{
         if (!userId || typeof userId !== 'number') {
             throw new Error("Invalid user id");
         }
-        if (!requester || typeof requester.user_id !== 'number' || !requester.role) {
+        if (!requester || !requester.role) {
             throw new Error("Unauthorized: Invalid requester info");
         }
 
-        if (requester.role !== ROLES.ADMIN && userId !== requester.user_id) {
+        if (requester.role !== ROLES.ADMIN && Number(userId) !== Number(requester.user_id)) {
             throw new Error("Unauthorized: You can only update your own profile");
         }
 
@@ -194,7 +194,7 @@ export class UserService{
         if (!requester.role) throw new Error('Unauthorized: User role is missing in token.');
         const isAdmin = requester.role === ROLES.ADMIN;
 
-        console.log(`UserService.getUsers called with filters: ${JSON.stringify(filters)} and requester: ${JSON.stringify(requester)}`);
+        // console.log(`UserService.getUsers called with filters: ${JSON.stringify(filters)} and requester: ${JSON.stringify(requester)}`);
         
         
         if (!isAdmin) {
