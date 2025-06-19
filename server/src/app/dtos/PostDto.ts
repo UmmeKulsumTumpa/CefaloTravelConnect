@@ -7,7 +7,7 @@ export interface PostDto {
 	total_cost?: number;
 	total_duration?: number;
 	effort_level?: 'low' | 'medium' | 'high';
-	destination_id?: number;
+	destination_id?: string;
 	categories?: string[];
 	visibility?: 'public' | 'private' | 'friends';
 	images?: ImageDto[];
@@ -18,7 +18,7 @@ export interface PostDto {
 export interface UpdatePostDto extends Partial<PostDto> { }
 
 export interface PostServiceDto extends ServiceDto {
-	service_id: number;
+	service_id: string;
 	cost?: number;
 	rating?: number;
 	visit_date?: string;
@@ -26,7 +26,7 @@ export interface PostServiceDto extends ServiceDto {
 }
 
 export interface PostTransportDto extends TransportDto {
-	transport_id: number;
+	transport_id: string;
 	cost?: number;
 	rating?: number;
 	departure_time?: string;

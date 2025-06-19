@@ -7,8 +7,8 @@ import { PostService } from '../services/Post.service.js';
 import { PostController } from '../controllers/Post.controller.js';
 import { authenticationMiddleware } from '../middlewares/authentication.middleware.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
-// import { requestValidationMiddleware } from '../middlewares/requestValidation.middleware.js';
-// import { postSchema } from '../validations/Post.validation.js';
+import { requestValidationMiddleware } from '../middlewares/requestValidation.middleware.js';
+import { postSchema, postUpdateSchema } from '../validations/Post.validation.js';
 
 const router = express.Router();
 
@@ -28,10 +28,46 @@ const postService = new PostService(
 );
 const postController = new PostController(postService);
 
-router.post('/', authenticationMiddleware, asyncHandler(postController.createPost.bind(postController)));
-router.get('/me', authenticationMiddleware, asyncHandler(postController.getPostsByUser.bind(postController)));
-router.get('/:id', authenticationMiddleware, asyncHandler(postController.getPost.bind(postController)));
-router.patch('/:id', authenticationMiddleware, asyncHandler(postController.updatePost.bind(postController)));
-router.delete('/:id', authenticationMiddleware, asyncHandler(postController.deletePost.bind(postController)));
+router.post(
+	'/',
+	authenticationMiddleware,
+	requestValidationMiddleware(postSchema, 'body'),
+	asyncHandler(postController.createPost.bind(postController))
+);
+
+router.get(
+	'/',
+	asyncHandler(postController.getAllPublicPosts.bind(postController))
+);
+
+router.get(
+	'/user/:userId',
+	asyncHandler(postController.getPostsByUserId.bind(postController))
+);
+
+router.get(
+	'/:postId',
+	asyncHandler(postController.getPost.bind(postController))
+);
+
+router.patch(
+	'/:postId',
+	authenticationMiddleware,
+	requestValidationMiddleware(postUpdateSchema, 'body'),
+	asyncHandler(postController.updatePost.bind(postController))
+);
+
+router.put(
+	'/:postId',
+	authenticationMiddleware,
+	requestValidationMiddleware(postSchema, 'body'),
+	asyncHandler(postController.updatePost.bind(postController))
+);
+
+router.delete(
+	'/:postId',
+	authenticationMiddleware,
+	asyncHandler(postController.deletePost.bind(postController))
+);
 
 export const PostRouter = router;

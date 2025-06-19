@@ -5,7 +5,7 @@ import type { ITransportRepository } from '../interfaces/ITransportRepository.js
 export class TransportRepository implements ITransportRepository {
 	constructor(private knex: Knex) { }
 
-	async create(dto: TransportDto): Promise<number> {
+	async create(dto: TransportDto): Promise<string> {
 		const [id] = await this.knex('transports').insert({
 			name: dto.name,
 			mode: dto.mode,
@@ -18,11 +18,11 @@ export class TransportRepository implements ITransportRepository {
 		return id.transport_id || id;
 	}
 
-	async findById(transport_id: number): Promise<any> {
+	async findById(transport_id: string): Promise<any> {
 		return this.knex('transports').where({ transport_id }).first();
 	}
 
-	async findOrCreate(dto: TransportDto): Promise<number> {
+	async findOrCreate(dto: TransportDto): Promise<string> {
 		const existing = await this.knex('transports')
 			.where({ name: dto.name, mode: dto.mode })
 			.first();
