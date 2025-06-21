@@ -3,6 +3,8 @@ import { UserRouter } from './app/routes/User.router.js';
 import PlaceRouter from './app/routes/Place.router.js';
 import WishlistRouter from './app/routes/Wishlist.router.js';
 import ServiceRouter from './app/routes/Service.router.js';
+import PostRouter from './app/routes/Post.router.js';
+import path from 'path';
 
 const router = express.Router();
 
@@ -23,6 +25,10 @@ const moduleRoutes = [
         path: '/services',
         route: ServiceRouter,
     },
+    {
+        path: '/posts',
+        route: PostRouter,
+    }
 ];
 
 moduleRoutes.forEach((route) => {
