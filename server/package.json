@@ -9,7 +9,10 @@
     "start": "node dist/server.js",
     "build": "tsc",
     "knex": "tsx node_modules/.bin/knex",
-    "migrate:latest": "NODE_OPTIONS='--loader ts-node/esm' knex migrate:latest --knexfile src/db/knexfile.cjs"
+    "migrate:latest": "NODE_OPTIONS='--loader ts-node/esm' knex migrate:latest --knexfile src/db/knexfile.cjs",
+    "migrate:make": "NODE_OPTIONS='--loader ts-node/esm' knex migrate:make --migrations-directory migrations --knexfile src/db/knexfile.cjs",
+    "migrate:rollback": "NODE_OPTIONS='--loader ts-node/esm' knex migrate:rollback --knexfile src/db/knexfile.cjs",
+    "seed": "NODE_OPTIONS='--loader ts-node/esm' knex seed:run --knexfile src/db/knexfile.cjs"
   },
   "keywords": [],
   "author": "Umme Kulsum Tumpa",
