@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
 import { CreatePostDto, UpdatePostDto, AddPostServiceDto, AddPostTransportDto, AddImageDto } from '../dtos/PostDto.js';
-import { Post, PostService, PostTransport, Image, IPostRepository, PostFilter } from '../interfaces/IPostRepository.js';
+import { Post, PostService, PostTransport, Image, IPostRepository, PostFilter, PostServiceFilter, ImageFilter, TransportFilter } from '../interfaces/IPostRepository.js';
 
 export class PostRepository implements IPostRepository {
     constructor(private knex: Knex) { }
@@ -64,16 +64,38 @@ export class PostRepository implements IPostRepository {
         return img;
     }
 
-    async getPostServices(post_id: string): Promise<PostService[]> {
-        return this.knex<PostService>('post_services').where({ post_id });
+    async getPostServices(post_id: string, filters?: PostServiceFilter): Promise<PostService[]> {
+        let query = this.knex<PostService>('post_services').where({ post_id });
+        if (filters) {
+            if (filters.costMin !== undefined) query = query.andWhere('cost', '>=', filters.costMin);
+            if (filters.costMax !== undefined) query = query.andWhere('cost', '<=', filters.costMax);
+            if (filters.ratingMin !== undefined) query = query.andWhere('rating', '>=', filters.ratingMin);
+            if (filters.ratingMax !== undefined) query = query.andWhere('rating', '<=', filters.ratingMax);
+            if (filters.recommended !== undefined) query = query.andWhere('recommended', filters.recommended);
+            if (filters.service_id) query = query.andWhere('service_id', filters.service_id);
+        }
+        return query.select('*');
     }
 
-    async getPostTransports(post_id: string): Promise<PostTransport[]> {
-        return this.knex<PostTransport>('post_transports').where({ post_id });
+    async getPostImages(post_id: string, filters?: ImageFilter): Promise<Image[]> {
+        let query = this.knex<Image>('images').where({ post_id });
+        if (filters) {
+            if (filters.caption) query = query.andWhere('caption', 'ilike', `%${filters.caption}%`);
+        }
+        return query.select('*');
     }
 
-    async getPostImages(post_id: string): Promise<Image[]> {
-        return this.knex<Image>('images').where({ post_id });
+    async getPostTransports(post_id: string, filters?: TransportFilter): Promise<PostTransport[]> {
+        let query = this.knex<PostTransport>('post_transports').where({ post_id });
+        if (filters) {
+            if (filters.mode) query = query.andWhere('mode', filters.mode);
+            if (filters.costMin !== undefined) query = query.andWhere('cost', '>=', filters.costMin);
+            if (filters.costMax !== undefined) query = query.andWhere('cost', '<=', filters.costMax);
+            if (filters.ratingMin !== undefined) query = query.andWhere('rating', '>=', filters.ratingMin);
+            if (filters.ratingMax !== undefined) query = query.andWhere('rating', '<=', filters.ratingMax);
+            if (filters.recommended !== undefined) query = query.andWhere('recommended', filters.recommended);
+        }
+        return query.select('*');
     }
 
     async likePost(post_id: string): Promise<Post> {
@@ -82,5 +104,12 @@ export class PostRepository implements IPostRepository {
             .increment('likes', 1)
             .returning('*');
         return post;
+    }
+
+    async deletePostService(post_service_id: string): Promise<number> {
+        return this.knex('post_services').where({ post_service_id }).del();
+    }
+    async deleteImage(image_id: string): Promise<number> {
+        return this.knex('images').where({ image_id }).del();
     }
 }

@@ -63,6 +63,28 @@ export type PostFilter = {
     authUserId?: string;
 };
 
+export interface PostServiceFilter {
+    costMin?: number;
+    costMax?: number;
+    ratingMin?: number;
+    ratingMax?: number;
+    recommended?: boolean;
+    service_id?: string;
+}
+
+export interface ImageFilter {
+    caption?: string;
+}
+
+export interface TransportFilter {
+    mode?: string;
+    costMin?: number;
+    costMax?: number;
+    ratingMin?: number;
+    ratingMax?: number;
+    recommended?: boolean;
+}
+
 export interface IPostRepository {
     createPost(data: CreatePostDto): Promise<Post>;
     updatePost(post_id: string, data: UpdatePostDto): Promise<Post>;
@@ -72,8 +94,10 @@ export interface IPostRepository {
     addPostService(data: AddPostServiceDto): Promise<PostService>;
     addPostTransport(data: AddPostTransportDto): Promise<PostTransport>;
     addImage(data: AddImageDto): Promise<Image>;
-    getPostServices(post_id: string): Promise<PostService[]>;
-    getPostTransports(post_id: string): Promise<PostTransport[]>;
-    getPostImages(post_id: string): Promise<Image[]>;
+    getPostServices(post_id: string, filters?: PostServiceFilter): Promise<PostService[]>;
+    getPostImages(post_id: string, filters?: ImageFilter): Promise<Image[]>;
+    getPostTransports(post_id: string, filters?: TransportFilter): Promise<PostTransport[]>;
     likePost(post_id: string): Promise<Post>;
+    deletePostService(post_service_id: string): Promise<number>;
+    deleteImage(image_id: string): Promise<number>;
 }

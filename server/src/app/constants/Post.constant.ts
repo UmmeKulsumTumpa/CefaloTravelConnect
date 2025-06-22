@@ -1,4 +1,3 @@
-// Post.constant.ts
 export const POST_EFFORT_LEVELS = ['Low', 'Medium', 'High'] as const;
 export type EffortLevel = (typeof POST_EFFORT_LEVELS)[number];
 

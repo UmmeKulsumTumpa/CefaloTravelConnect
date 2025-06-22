@@ -6,6 +6,8 @@ import db from '../../db/db.js';
 import { optionalAuthentication } from '../middlewares/optionalAuthentication.middleware.js';
 import { asyncHandler } from '../utils/asyncHandler.js';
 import { authenticationMiddleware } from '../middlewares/authentication.middleware.js';
+import PostServiceRouter from './PostService.router.js';
+import PostImageRouter from './PostImage.router.js';
 
 const router = express.Router();
 
@@ -25,6 +27,8 @@ router.get(
     asyncHandler(postController.getAllPosts.bind(postController))
 );
 
+// Q: can we use the postAccessGuard middleware here?
+// will consider it later
 router.get(
     '/:id',
     optionalAuthentication,
@@ -47,6 +51,18 @@ router.post(
     '/:id/like',
     authenticationMiddleware,
     asyncHandler(postController.likePost.bind(postController))
+);
+
+router.use(
+    '/:postId/services',
+    optionalAuthentication, 
+    PostServiceRouter
+);
+
+router.use(
+    '/:postId/images', 
+    optionalAuthentication,
+    PostImageRouter
 );
 
 export default router;

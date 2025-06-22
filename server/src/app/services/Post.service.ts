@@ -5,7 +5,6 @@ export class PostService {
     constructor(private postRepository: IPostRepository) {}
 
     async createPost(data: CreatePostDto): Promise<Post> {
-        // Add any business logic here if needed
         return this.postRepository.createPost(data);
     }
 

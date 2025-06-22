@@ -46,12 +46,30 @@ export class PostController {
                 data: errors
             });
         }
-        const post = await this.postService.updatePost(req.params.id, req.body);
+        const userId = (req as any).user?.user_id;
+        const post = await this.postService.getPostById(req.params.id);
+        if (!post) {
+            return sendResponse(res, {
+                statusCode: 404,
+                success: false,
+                message: 'Post not found',
+                data: null
+            });
+        }
+        if (post.user_id !== userId) {
+            return sendResponse(res, {
+                statusCode: 403,
+                success: false,
+                message: 'Forbidden',
+                data: null
+            });
+        }
+        const updated = await this.postService.updatePost(req.params.id, req.body);
         return sendResponse(res, {
             statusCode: 200,
             success: true,
             message: 'Post updated successfully',
-            data: post
+            data: updated
         });
     }
 
@@ -101,6 +119,24 @@ export class PostController {
     }
 
     async deletePost(req: Request, res: Response) {
+        const userId = (req as any).user?.user_id;
+        const post = await this.postService.getPostById(req.params.id);
+        if (!post) {
+            return sendResponse(res, {
+                statusCode: 404,
+                success: false,
+                message: 'Post not found',
+                data: null
+            });
+        }
+        if (post.user_id !== userId) {
+            return sendResponse(res, {
+                statusCode: 403,
+                success: false,
+                message: 'Forbidden',
+                data: null
+            });
+        }
         await this.postService.deletePost(req.params.id);
         return sendResponse(res, {
             statusCode: 204,
@@ -111,12 +147,25 @@ export class PostController {
     }
 
     async likePost(req: Request, res: Response) {
-        const post = await this.postService.likePost(req.params.id);
+        const postId = req.params.id;
+        const post = await this.postService.getPostById(postId);
+        if (!post) {
+            return sendResponse(res, {
+                statusCode: 404,
+                success: false,
+                message: 'Post not found',
+                data: null
+            });
+        }
+        // Q: should we check if the user has already liked the post?
+        // will handle duplicated liked by the same user, later
+        // now any authenticated user can like a post multiple times
+        const liked = await this.postService.likePost(postId);
         return sendResponse(res, {
             statusCode: 200,
             success: true,
             message: 'Post liked successfully',
-            data: post
+            data: liked
         });
     }
 }
