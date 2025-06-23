@@ -5,6 +5,7 @@ import WishlistRouter from './app/routes/Wishlist.router.js';
 import ServiceRouter from './app/routes/Service.router.js';
 import PostRouter from './app/routes/Post.router.js';
 import TravelPlanRouter from './app/routes/TravelPlan.router.js';
+import NotificationRouter from './app/routes/Notification.router.js';
 import path from 'path';
 
 const router = express.Router();
@@ -33,6 +34,10 @@ const moduleRoutes = [
     {
         path: '/travel-plans',
         route: TravelPlanRouter,
+    },
+    {
+        path: '/notifications',
+        route: NotificationRouter,
     }
 ];
 
