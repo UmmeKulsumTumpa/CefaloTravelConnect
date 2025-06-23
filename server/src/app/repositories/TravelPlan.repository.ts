@@ -21,9 +21,9 @@ export class TravelPlanRepository implements ITravelPlanRepository {
         return await this.knex<TravelPlan>('travel_plans').where({ plan_id }).first();
     }
 
-    async getAllTravelPlans(filters: { user_id?: string; name?: string }): Promise<TravelPlan[]> {
+    async getAllTravelPlans(filters: { user_id?: number; name?: string }): Promise<TravelPlan[]> {
         let query = this.knex<TravelPlan>('travel_plans');
-        if (filters.user_id) {
+        if (filters.user_id !== undefined) {
             query = query.where('user_id', filters.user_id);
         }
         if (filters.name) {
@@ -69,6 +69,21 @@ export class TravelPlanRepository implements ITravelPlanRepository {
         return participants;
     }
 
+    async getPlanParticipant(plan_id: string, user_id: number): Promise<PlanParticipant | undefined> {
+        return this.knex<PlanParticipant>('plan_participants').where({ plan_id, user_id }).first();
+    }
+
+    async updatePlanParticipant(plan_id: string, user_id: number, data: Partial<PlanParticipant>): Promise<PlanParticipant> {
+        const [participant] = await this.knex<PlanParticipant>('plan_participants')
+            .where({ plan_id, user_id })
+            .update(data)
+            .returning('*');
+        return participant;
+    }
+
+    async deletePlanParticipant(plan_id: string, user_id: number): Promise<number> {
+        return this.knex<PlanParticipant>('plan_participants').where({ plan_id, user_id }).del();
+    }
 
     // plan_comments methods
     async addPlanComment(data: AddPlanCommentDto): Promise<PlanComment> {

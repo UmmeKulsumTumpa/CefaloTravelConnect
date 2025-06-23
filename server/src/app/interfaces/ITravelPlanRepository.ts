@@ -52,7 +52,7 @@ export interface PlannedPlace {
 
 export interface PlanParticipant {
     plan_id: string;
-    user_id: string;
+    user_id: number;
     is_going?: boolean;
     role_permission?: ParticipantRole;
 }
@@ -60,7 +60,7 @@ export interface PlanParticipant {
 export interface PlanComment {
     comment_id: string;
     plan_id: string;
-    user_id: string;
+    user_id: number;
     content: string;
     posted_at: string;
 }
@@ -69,7 +69,7 @@ export interface ITravelPlanRepository {
     createTravelPlan(data: CreateTravelPlanDto): Promise<TravelPlan>;
     updateTravelPlan(plan_id: string, data: UpdateTravelPlanDto): Promise<TravelPlan>;
     getTravelPlanById(plan_id: string): Promise<TravelPlan | undefined>;
-    getAllTravelPlans(filters: { user_id?: string; name?: string }): Promise<TravelPlan[]>;
+    getAllTravelPlans(filters: { user_id?: number; name?: string }): Promise<TravelPlan[]>;
     deleteTravelPlan(plan_id: string): Promise<number>;
 
     addPlanService(data: AddPlanServiceDto): Promise<PlanService>;
@@ -80,14 +80,16 @@ export interface ITravelPlanRepository {
 
     addPlanParticipant(data: AddPlanParticipantDto): Promise<PlanParticipant>;
     getPlanParticipants(plan_id: string): Promise<PlanParticipant[]>;
+    getPlanParticipant(plan_id: string, user_id: number): Promise<PlanParticipant | undefined>;
+    updatePlanParticipant(plan_id: string, user_id: number, data: Partial<PlanParticipant>): Promise<PlanParticipant>;
+    deletePlanParticipant(plan_id: string, user_id: number): Promise<number>;
 
     addPlanComment(data: AddPlanCommentDto): Promise<PlanComment>;
     getPlanComments(plan_id: string): Promise<PlanComment[]>;
 
-    
     // addPlanTransport(data: AddPlanTransportDto): Promise<PlanTransport>;
     // getPlanTransports(plan_id: string): Promise<PlanTransport[]>;
 
-    // upvotePlan(plan_id: string, user_id: string): Promise<void>;
-    // downvotePlan(plan_id: string, user_id: string): Promise<void>;
+    // upvotePlan(plan_id: string, user_id: number): Promise<void>;
+    // downvotePlan(plan_id: string, user_id: number): Promise<void>;
 }

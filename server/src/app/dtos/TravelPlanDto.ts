@@ -51,13 +51,13 @@ export interface AddPlannedPlaceDto {
 
 export interface AddPlanParticipantDto {
     plan_id: string;
-    user_id: string;
+    user_id: number;
     is_going?: boolean;
     role_permission: ParticipantRole;
 }
 
 export interface AddPlanCommentDto {
     plan_id: string;
-    user_id: string;
+    user_id: number;
     content: string;
 }

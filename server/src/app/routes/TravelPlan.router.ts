@@ -8,6 +8,7 @@ import { asyncHandler } from '../utils/asyncHandler.js';
 import { authenticationMiddleware } from '../middlewares/authentication.middleware.js';
 import TravelPlanPlaceRouter from './TravelPlanPlace.router.js';
 import TravelPlanServiceRouter from './TravelPlanService.router.js';
+import PlanParticipantRouter from './PlanParticipant.router.js';
 
 const router = express.Router();
 
@@ -45,19 +46,6 @@ router.delete(
     asyncHandler(travelPlanController.deleteTravelPlan.bind(travelPlanController))
 );
 
-// plan participants routers
-router.post(
-    '/:plan_id/participants',
-    authenticationMiddleware,
-    asyncHandler(travelPlanController.addPlanParticipant.bind(travelPlanController))
-);
-
-router.get(
-    '/:plan_id/participants',
-    optionalAuthentication,
-    asyncHandler(travelPlanController.getPlanParticipants.bind(travelPlanController))
-);
-
 // plan comments routers
 router.post(
     '/:plan_id/comments',
@@ -71,7 +59,12 @@ router.get(
     asyncHandler(travelPlanController.getPlanComments.bind(travelPlanController))
 );
 
-// plan places, services and transports routers
+// plan participants, places, services and transports routers
+router.use(
+    '/:plan_id/participants',
+    PlanParticipantRouter
+);
+
 router.use(
     '/:plan_id/places',
     authenticationMiddleware,

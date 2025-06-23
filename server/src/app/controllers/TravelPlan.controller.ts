@@ -1,13 +1,14 @@
 import { Request, Response } from 'express';
 import { TravelPlanService } from '../services/TravelPlan.service.js';
 import sendResponse from '../utils/sendResponse.js';
+import { validateCreateTravelPlan, validateUpdateTravelPlan } from '../validations/TravelPlan.validation.js';
 
 export class TravelPlanController {
     constructor(private travelPlanService: TravelPlanService) {}
 
     async createTravelPlan(req: Request, res: Response) {
         try {
-            const userId = (req as any).user?.user_id;
+            let userId = (req as any).user?.user_id;
             if (!userId) {
                 return sendResponse(res, {
                     statusCode: 401,
@@ -16,7 +17,25 @@ export class TravelPlanController {
                     data: null
                 });
             }
-            const plan = await this.travelPlanService.createTravelPlan({ ...req.body });
+            userId = Number(userId);
+            if (isNaN(userId)) {
+                return sendResponse(res, {
+                    statusCode: 400,
+                    success: false,
+                    message: 'Invalid user_id',
+                    data: null
+                });
+            }
+            const errors = validateCreateTravelPlan(req.body);
+            if (errors.length) {
+                return sendResponse(res, {
+                    statusCode: 400,
+                    success: false,
+                    message: 'Validation error',
+                    data: errors
+                });
+            }
+            const plan = await this.travelPlanService.createTravelPlan({ ...req.body, user_id: userId });
             return sendResponse(res, {
                 statusCode: 201,
                 success: true,
@@ -35,7 +54,25 @@ export class TravelPlanController {
 
     async updateTravelPlan(req: Request, res: Response) {
         try {
-            const userId = (req as any).user?.user_id;
+            let userId = (req as any).user?.user_id;
+            userId = Number(userId);
+            if (isNaN(userId)) {
+                return sendResponse(res, {
+                    statusCode: 400,
+                    success: false,
+                    message: 'Invalid user_id',
+                    data: null
+                });
+            }
+            const errors = validateUpdateTravelPlan(req.body);
+            if (errors.length) {
+                return sendResponse(res, {
+                    statusCode: 400,
+                    success: false,
+                    message: 'Validation error',
+                    data: errors
+                });
+            }
             const plan = await this.travelPlanService.getTravelPlanById(req.params.plan_id);
             if (!plan) {
                 return sendResponse(res, {
@@ -45,7 +82,7 @@ export class TravelPlanController {
                     data: null
                 });
             }
-            const updated = await this.travelPlanService.updateTravelPlan(req.params.plan_id, req.body);
+            const updated = await this.travelPlanService.updateTravelPlan(req.params.plan_id, req.body, userId);
             return sendResponse(res, {
                 statusCode: 200,
                 success: true,
@@ -91,7 +128,20 @@ export class TravelPlanController {
 
     async getAllTravelPlans(req: Request, res: Response) {
         try {
-            const plans = await this.travelPlanService.getAllTravelPlans(req.query);
+            // If user_id is present in query, cast to number
+            const filters: any = { ...req.query };
+            if (filters.user_id !== undefined) {
+                filters.user_id = Number(filters.user_id);
+                if (isNaN(filters.user_id)) {
+                    return sendResponse(res, {
+                        statusCode: 400,
+                        success: false,
+                        message: 'Invalid user_id in query',
+                        data: null
+                    });
+                }
+            }
+            const plans = await this.travelPlanService.getAllTravelPlans(filters);
             return sendResponse(res, {
                 statusCode: 200,
                 success: true,
@@ -110,6 +160,16 @@ export class TravelPlanController {
 
     async deleteTravelPlan(req: Request, res: Response) {
         try {
+            let userId = (req as any).user?.user_id;
+            userId = Number(userId);
+            if (isNaN(userId)) {
+                return sendResponse(res, {
+                    statusCode: 400,
+                    success: false,
+                    message: 'Invalid user_id',
+                    data: null
+                });
+            }
             const plan = await this.travelPlanService.getTravelPlanById(req.params.plan_id);
             if (!plan) {
                 return sendResponse(res, {
@@ -119,60 +179,12 @@ export class TravelPlanController {
                     data: null
                 });
             }
-            await this.travelPlanService.deleteTravelPlan(req.params.plan_id);
+            await this.travelPlanService.deleteTravelPlan(req.params.plan_id, userId);
             return sendResponse(res, {
                 statusCode: 200,
                 success: true,
                 message: 'Travel plan deleted successfully',
                 data: null
-            });
-        } catch (error) {
-            return sendResponse(res, {
-                statusCode: 500,
-                success: false,
-                message: 'Internal server error',
-                data: (error as Error).message
-            });
-        }
-    }
-
-    // plan_participants methods
-    async addPlanParticipant(req: Request, res: Response) {
-        try {
-            const userId = (req as any).user?.user_id;
-            if (!userId) {
-                return sendResponse(res, {
-                    statusCode: 401,
-                    success: false,
-                    message: 'Unauthorized',
-                    data: null
-                });
-            }
-            const participant = await this.travelPlanService.addPlanParticipant({ ...req.body, user_id: userId });
-            return sendResponse(res, {
-                statusCode: 201,
-                success: true,
-                message: 'Participant added successfully',
-                data: participant
-            });
-        } catch (error) {
-            return sendResponse(res, {
-                statusCode: 500,
-                success: false,
-                message: 'Internal server error',
-                data: (error as Error).message
-            });
-        }
-    }
-
-    async getPlanParticipants(req: Request, res: Response) {
-        try {
-            const participants = await this.travelPlanService.getPlanParticipants(req.params.plan_id);
-            return sendResponse(res, {
-                statusCode: 200,
-                success: true,
-                message: 'Participants fetched successfully',
-                data: participants
             });
         } catch (error) {
             return sendResponse(res, {
@@ -196,7 +208,8 @@ export class TravelPlanController {
                     data: null
                 });
             }
-            const comment = await this.travelPlanService.addPlanComment({ ...req.body, user_id: userId });
+            
+            const comment = await this.travelPlanService.addPlanComment({ ...req.body, user_id: userId }, userId);
             return sendResponse(res, {
                 statusCode: 201,
                 success: true,
