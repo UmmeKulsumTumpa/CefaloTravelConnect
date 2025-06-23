@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { TravelPlanService } from '../services/TravelPlan.service.js';
+import { AddPlanParticipantDto } from '../dtos/TravelPlanDto.js';
 import sendResponse from '../utils/sendResponse.js';
 
 export class PlanParticipantController {
@@ -7,8 +8,8 @@ export class PlanParticipantController {
 
     async addPlanParticipant(req: Request, res: Response) {
         try {
-            const userId = (req as any).user?.user_id;
-            if (!userId) {
+            const user = (req as any).user;
+            if (!user || !user.user_id) {
                 return sendResponse(res, {
                     statusCode: 401,
                     success: false,
@@ -16,7 +17,17 @@ export class PlanParticipantController {
                     data: null
                 });
             }
-            const participant = await this.travelPlanService.addPlanParticipant({ ...req.body }, userId);
+
+            const plan_id = req.params.plan_id;
+
+            const planParticipantData: AddPlanParticipantDto = {
+                plan_id: plan_id,
+                user_id: req.body.user_id,
+                is_going: req.body.is_going,
+                role_permission: req.body.role_permission
+            };
+
+            const participant = await this.travelPlanService.addPlanParticipant(planParticipantData, user);
             return sendResponse(res, {
                 statusCode: 201,
                 success: true,

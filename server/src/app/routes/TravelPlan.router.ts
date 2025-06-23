@@ -9,11 +9,15 @@ import { authenticationMiddleware } from '../middlewares/authentication.middlewa
 import TravelPlanPlaceRouter from './TravelPlanPlace.router.js';
 import TravelPlanServiceRouter from './TravelPlanService.router.js';
 import PlanParticipantRouter from './PlanParticipant.router.js';
+import { UserRepository } from '../repositories/User.repository.js';
+import { UserService } from '../services/User.service.js';
 
 const router = express.Router();
 
 const travelPlanRepository = new TravelPlanRepository(db);
-const travelPlanService = new TravelPlanService(travelPlanRepository);
+const userRepository = new UserRepository(db);
+const userService = new UserService(userRepository);
+const travelPlanService = new TravelPlanService(travelPlanRepository, userService);
 const travelPlanController = new TravelPlanController(travelPlanService);
 
 router.post(

@@ -9,7 +9,6 @@ export interface TravelPlan {
     end_date?: string;
     total_cost?: number;
     total_duration?: number;
-    status?: TravelPlanStatus;
     upvotes?: number;
     downvotes?: number;
     created_at?: string;

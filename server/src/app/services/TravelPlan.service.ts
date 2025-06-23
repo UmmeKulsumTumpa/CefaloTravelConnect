@@ -1,15 +1,17 @@
 import { CreateTravelPlanDto, UpdateTravelPlanDto, AddPlanParticipantDto, AddPlanCommentDto } from '../dtos/TravelPlanDto.js';
 import { ITravelPlanRepository, TravelPlan, PlanParticipant, PlanComment } from '../interfaces/ITravelPlanRepository.js';
+import { UserFilter } from '../interfaces/IUserRepository.js';
+import { UserService } from './User.service.js';
 import { AppError } from '../middlewares/error.middleware.js';
 
 export class TravelPlanService {
-    constructor(private travelPlanRepository: ITravelPlanRepository) {}
+    constructor(private travelPlanRepository: ITravelPlanRepository, private userService: UserService) {}
 
-    async createTravelPlan(data: CreateTravelPlanDto & { user_id: number }): Promise<TravelPlan> {
+    async createTravelPlan(data: CreateTravelPlanDto , user_id: number): Promise<TravelPlan> {
         const plan = await this.travelPlanRepository.createTravelPlan(data);
         await this.travelPlanRepository.addPlanParticipant({
             plan_id: plan.plan_id,
-            user_id: data.user_id,
+            user_id: user_id,
             role_permission: 'Owner',
             is_going: true
         });
@@ -41,11 +43,33 @@ export class TravelPlanService {
     }
 
     // plan participants methods
-    async addPlanParticipant(data: AddPlanParticipantDto, requester_id: number): Promise<PlanParticipant> {
-        const participant = await this.travelPlanRepository.getPlanParticipant(data.plan_id, requester_id);
+    async addPlanParticipant(data: AddPlanParticipantDto, requester: any): Promise<PlanParticipant> {
+        const participant = await this.travelPlanRepository.getPlanParticipant(data.plan_id, requester.user_id);
+        // console.log('Participant:', participant);
+        
         if (!participant || participant.role_permission === 'Viewer') {
             throw new AppError('Forbidden: Only owner or editor can add participants', 403);
         }
+        // console.log('Adding participant:', data);
+        
+        // check if user already exists in the user db
+        // call a user service or repository to check if the user exists
+        // const userFilter: UserFilter = {
+        //     id: data.user_id
+        // };
+
+        // const userExists = await this.userService.getUsers(userFilter, requester);
+        // if (!userExists) {
+        //     throw new AppError('User does not exist', 404);
+        // }
+        // console.log('User exists:', userExists);
+        
+
+        const existingParticipant = await this.travelPlanRepository.getPlanParticipant(data.plan_id, data.user_id);
+        if (existingParticipant) {
+            throw new AppError('Participant already exists in the plan', 400);
+        }
+
         return this.travelPlanRepository.addPlanParticipant(data);
     }
 

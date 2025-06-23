@@ -35,7 +35,7 @@ export class TravelPlanController {
                     data: errors
                 });
             }
-            const plan = await this.travelPlanService.createTravelPlan({ ...req.body, user_id: userId });
+            const plan = await this.travelPlanService.createTravelPlan({ ...req.body}, userId);
             return sendResponse(res, {
                 statusCode: 201,
                 success: true,
@@ -208,8 +208,14 @@ export class TravelPlanController {
                     data: null
                 });
             }
-            
-            const comment = await this.travelPlanService.addPlanComment({ ...req.body, user_id: userId }, userId);
+            const plan_id = req.params.plan_id;
+            const planComment = {
+                plan_id,
+                user_id: userId,
+                content: req.body.content
+            }
+
+            const comment = await this.travelPlanService.addPlanComment(planComment, userId);
             return sendResponse(res, {
                 statusCode: 201,
                 success: true,
