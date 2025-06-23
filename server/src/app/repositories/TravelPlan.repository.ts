@@ -1,0 +1,83 @@
+// TravelPlan.repository.ts
+import { Knex } from 'knex';
+import { CreateTravelPlanDto, UpdateTravelPlanDto, AddPlannedPlaceDto, AddPlanServiceDto, AddPlanParticipantDto, AddPlanCommentDto } from '../dtos/TravelPlanDto.js';
+import { TravelPlan, ITravelPlanRepository, PlannedPlace, PlanService, PlanParticipant, PlanComment } from '../interfaces/ITravelPlanRepository.js';
+
+export class TravelPlanRepository implements ITravelPlanRepository {
+    constructor(private knex: Knex) { }
+
+    // general travel plan methods
+    async createTravelPlan(data: CreateTravelPlanDto): Promise<TravelPlan> {
+        const [plan] = await this.knex<TravelPlan>('travel_plans').insert(data).returning('*');
+        return plan;
+    }
+
+    async updateTravelPlan(plan_id: string, data: UpdateTravelPlanDto): Promise<TravelPlan> {
+        const [plan] = await this.knex<TravelPlan>('travel_plans').where({ plan_id }).update(data).returning('*');
+        return plan;
+    }
+
+    async getTravelPlanById(plan_id: string): Promise<TravelPlan | undefined> {
+        return await this.knex<TravelPlan>('travel_plans').where({ plan_id }).first();
+    }
+
+    async getAllTravelPlans(filters: { user_id?: string; name?: string }): Promise<TravelPlan[]> {
+        let query = this.knex<TravelPlan>('travel_plans');
+        if (filters.user_id) {
+            query = query.where('user_id', filters.user_id);
+        }
+        if (filters.name) {
+            query = query.whereILike('name', `%${filters.name}%`);
+        }
+        return await query;
+    }
+
+    async deleteTravelPlan(plan_id: string): Promise<number> {
+        return this.knex<TravelPlan>('travel_plans').where({ plan_id }).del();
+    }
+
+    // travel plan places methods
+    async addPlannedPlace(data: AddPlannedPlaceDto): Promise<PlannedPlace>{
+        const [place] = await this.knex<PlannedPlace>('planned_places').insert(data).returning('*');
+        return place;
+    }
+
+    async getPlannedPlaces(plan_id: string): Promise<PlannedPlace[]> {
+        const places = await this.knex<PlannedPlace>('planned_places').where({ plan_id });
+        return places;
+    }
+
+    // service methods
+    async addPlanService(data: AddPlanServiceDto): Promise<PlanService> {
+        const [service] = await this.knex<PlanService>('plan_services').insert(data).returning('*');
+        return service;
+    }
+
+    async getPlanServices(plan_id: string): Promise<PlanService[]> {
+        const services = await this.knex<PlanService>('plan_services').where({ plan_id });
+        return services;
+    }
+
+    // plan_participants methods
+    async addPlanParticipant(data: AddPlanParticipantDto): Promise<PlanParticipant> {
+        const [participant] = await this.knex<PlanParticipant>('plan_participants').insert(data).returning('*');
+        return participant;
+    }
+
+    async getPlanParticipants(plan_id: string): Promise<PlanParticipant[]> {
+        const participants = await this.knex<PlanParticipant>('plan_participants').where({ plan_id });
+        return participants;
+    }
+
+
+    // plan_comments methods
+    async addPlanComment(data: AddPlanCommentDto): Promise<PlanComment> {
+        const [comment] = await this.knex<PlanComment>('plan_comments').insert(data).returning('*');
+        return comment;
+    }   
+
+    async getPlanComments(plan_id: string): Promise<PlanComment[]> {
+        const comments = await this.knex<PlanComment>('plan_comments').where({ plan_id });
+        return comments;
+    }
+}
