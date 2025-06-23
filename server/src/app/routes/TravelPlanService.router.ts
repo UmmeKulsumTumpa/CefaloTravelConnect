@@ -20,7 +20,6 @@ router.post(
 
 router.get(
     '/',
-    authenticationMiddleware,
     asyncHandler(travelPlanServiceController.getPlanServices.bind(travelPlanServiceController))
 );
 

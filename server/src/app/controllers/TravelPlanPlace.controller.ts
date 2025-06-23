@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { TravelPlanPlaceService } from "../services/TravelPlanPlace.service.js";
+import { AddPlannedPlaceDto } from "../dtos/TravelPlanDto.js";
 import sendResponse from "../utils/sendResponse.js";
 
 export class TravelPlanPlaceController {
@@ -15,7 +16,12 @@ export class TravelPlanPlaceController {
                 data: null
             });
         }
-        const place = await this.travelPlanPlaceService.addPlannedPlace({ ...req.body, user_id: userId });
+
+        const addPlannedPlaceDto: AddPlannedPlaceDto = {
+            ...req.body,
+            plan_id: req.params.plan_id
+        };
+        const place = await this.travelPlanPlaceService.addPlannedPlace(addPlannedPlaceDto);
         return sendResponse(res, {
             statusCode: 201,
             success: true,

@@ -71,13 +71,11 @@ router.use(
 
 router.use(
     '/:plan_id/places',
-    authenticationMiddleware,
     TravelPlanPlaceRouter
 );
 
 router.use(
     '/:plan_id/services',
-    authenticationMiddleware,
     TravelPlanServiceRouter
 );
 
