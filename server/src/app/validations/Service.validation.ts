@@ -1,8 +1,9 @@
-import { ServiceType } from '../dtos/ServiceDto.js';
+import { ServiceType, ServiceCreateRequestDto, ServiceUpdateRequestDto } from '../dtos/ServiceDto.js';
+import { validateCreateTransport, validateUpdateTransport } from './transport.validation.js';
 
 const allowedTypes: ServiceType[] = ['Hotel', 'Restaurant', 'Attraction', 'Transport'];
 
-export function validateService(data: any) {
+export function validateService(data: ServiceCreateRequestDto) {
     const errors: string[] = [];
     if (!data.name || typeof data.name !== 'string' || data.name.length > 255) {
         errors.push('Name is required and must be a string up to 255 characters.');
@@ -22,10 +23,14 @@ export function validateService(data: any) {
     if (data.description && typeof data.description !== 'string') {
         errors.push('Description must be a string.');
     }
+    if (data.type === 'Transport' && data.transport) {
+        const transportErrors = validateCreateTransport({ ...data.transport, service_id: '' });
+        errors.push(...transportErrors);
+    }
     return { valid: errors.length === 0, errors };
 }
 
-export function validateServiceUpdate(data: any) {
+export function validateServiceUpdate(data: ServiceUpdateRequestDto) {
     const errors: string[] = [];
     if (data.name !== undefined && (typeof data.name !== 'string' || data.name.length > 255)) {
         errors.push('Name must be a string up to 255 characters.');
@@ -44,6 +49,10 @@ export function validateServiceUpdate(data: any) {
     }
     if (data.description !== undefined && typeof data.description !== 'string') {
         errors.push('Description must be a string.');
+    }
+    if (data.type === 'Transport' && data.transport) {
+        const transportErrors = validateUpdateTransport(data.transport);
+        errors.push(...transportErrors);
     }
     return { valid: errors.length === 0, errors };
 }

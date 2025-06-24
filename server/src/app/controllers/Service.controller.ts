@@ -1,23 +1,12 @@
 import type { Request, Response, NextFunction } from 'express';
 import { ServiceService } from '../services/Service.service.js';
-import { validateService, validateServiceUpdate } from '../validations/Service.validation.js';
 import sendResponse from '../utils/sendResponse.js';
 
 export class ServiceController {
-    constructor(private serviceService: ServiceService) { }
+    constructor(private serviceService: ServiceService) {}
 
     async create(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const validation = validateService(req.body);
-            if (!validation.valid) {
-                sendResponse(res, {
-                    statusCode: 400,
-                    success: false,
-                    message: validation.errors.join(', '),
-                    data: null as any
-                });
-                return;
-            }
             const service = await this.serviceService.createService(req.body);
             sendResponse(res, {
                 statusCode: 201,
@@ -45,32 +34,27 @@ export class ServiceController {
         }
     }
 
-    async update(req: Request, res: Response, next: NextFunction): Promise<void> {
+    async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const validation = validateServiceUpdate(req.body);
-            if (!validation.valid) {
-                sendResponse(res, {
-                    statusCode: 400,
-                    success: false,
-                    message: validation.errors.join(', '),
-                    data: null as any
-                });
-                return;
-            }
-            const service = await this.serviceService.updateService(req.params.id, req.body);
-            if (!service) {
-                sendResponse(res, {
-                    statusCode: 404,
-                    success: false,
-                    message: 'Service not found',
-                    data: null as any
-                });
-                return;
-            }
+            const service = await this.serviceService.getServiceById(req.params.id);
             sendResponse(res, {
                 statusCode: 200,
                 success: true,
-                message: 'Service updated',
+                message: 'Service fetched successfully',
+                data: service
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+
+    async update(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const service = await this.serviceService.updateService(req.params.id, req.body);
+            sendResponse(res, {
+                statusCode: 200,
+                success: true,
+                message: 'Service updated successfully',
                 data: service
             });
         } catch (error) {
@@ -80,44 +64,12 @@ export class ServiceController {
 
     async delete(req: Request, res: Response, next: NextFunction): Promise<void> {
         try {
-            const deleted = await this.serviceService.deleteService(req.params.id);
-            if (!deleted) {
-                sendResponse(res, {
-                    statusCode: 404,
-                    success: false,
-                    message: 'Service not found',
-                    data: null as any
-                });
-                return;
-            }
+            await this.serviceService.deleteService(req.params.id);
             sendResponse(res, {
                 statusCode: 200,
                 success: true,
-                message: 'Service deleted',
-                data: null as any
-            });
-        } catch (error) {
-            next(error);
-        }
-    }
-
-    async getById(req: Request, res: Response, next: NextFunction): Promise<void> {
-        try {
-            const service = await this.serviceService.getServiceById(req.params.id);
-            if (!service) {
-                sendResponse(res, {
-                    statusCode: 404,
-                    success: false,
-                    message: 'Service not found',
-                    data: null as any
-                });
-                return;
-            }
-            sendResponse(res, {
-                statusCode: 200,
-                success: true,
-                message: 'Service fetched successfully',
-                data: service
+                message: 'Service deleted successfully',
+                data: null
             });
         } catch (error) {
             next(error);

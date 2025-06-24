@@ -1,3 +1,5 @@
+import { TransportCreateDto, TransportUpdateDto, Transport } from './TransportDto.js';
+
 export type ServiceType = 'Hotel' | 'Restaurant' | 'Attraction' | 'Transport';
 
 export interface CreateServiceDto {
@@ -18,6 +20,14 @@ export interface UpdateServiceDto {
     description?: string;
 }
 
+export interface ServiceCreateRequestDto extends CreateServiceDto {
+    transport?: TransportCreateDto;
+}
+
+export interface ServiceUpdateRequestDto extends UpdateServiceDto {
+    transport?: TransportUpdateDto;
+}
+
 export interface ServiceResponseDto {
     service_id: string;
     name: string;
@@ -27,4 +37,5 @@ export interface ServiceResponseDto {
     address?: string;
     description?: string;
     created_at: string;
+    transport?: Transport;
 }
