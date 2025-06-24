@@ -40,4 +40,13 @@ export class ServiceRepository {
         if (!service_ids.length) return [];
         return this.db('services').whereIn('service_id', service_ids).orderBy('created_at', 'desc');
     }
+
+    async findNearby(lat: number, lng: number, radius: number): Promise<ServiceEntity[]> {
+        return this.db('services')
+            .whereRaw(
+                `earth_distance(ll_to_earth(?, ?), ll_to_earth(latitude, longitude)) <= ?`,
+                [lat, lng, radius]
+            )
+            .orderBy('created_at', 'desc');
+    }
 }

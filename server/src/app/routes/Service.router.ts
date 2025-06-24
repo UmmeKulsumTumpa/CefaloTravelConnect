@@ -28,6 +28,11 @@ router.get(
 );
 
 router.get(
+    '/nearby',
+    asyncHandler(serviceController.findNearbyServices.bind(serviceController))
+);
+
+router.get(
     '/:id',
     asyncHandler(serviceController.getById.bind(serviceController))
 );

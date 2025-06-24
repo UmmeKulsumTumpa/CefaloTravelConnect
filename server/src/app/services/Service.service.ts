@@ -138,4 +138,24 @@ export class ServiceService {
         }
         return results;
     }
+
+    async findNearbyServices(latitude: number, longitude: number, radiusKm: number): Promise<ServiceResponseDto[]> {
+        const radiusMeters = radiusKm * 1000;
+        const nearby = await this.serviceRepository.findNearby(latitude, longitude, radiusMeters);
+        const results: ServiceResponseDto[] = [];
+        for (const service of nearby) {
+            let response = this.toServiceResponseDto(service);
+            if (response.type === 'Transport') {
+                const transport = await this.transportService.getTransportIfExists(service.service_id);
+                if (transport) {
+                    results.push({ ...response, transport });
+                } else {
+                    results.push(response);
+                }
+            } else {
+                results.push(response);
+            }
+        }
+        return results;
+    }
 }

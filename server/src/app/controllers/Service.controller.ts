@@ -80,4 +80,40 @@ export class ServiceController {
             next(error);
         }
     }
+
+    async findNearbyServices(req: Request, res: Response, next: NextFunction): Promise<void> {
+        try {
+            const { latitude, longitude, radius } = req.query;
+            if (!latitude || !longitude || !radius) {
+                sendResponse(res, {
+                    statusCode: 400,
+                    success: false,
+                    message: 'latitude, longitude, and radius are required',
+                    data: null
+                });
+                return;
+            }
+            const latNum = Number(latitude);
+            const lonNum = Number(longitude);
+            const radiusNum = Number(radius);
+            if (isNaN(latNum) || isNaN(lonNum) || isNaN(radiusNum) || radiusNum <= 0) {
+                sendResponse(res, {
+                    statusCode: 400,
+                    success: false,
+                    message: 'latitude, longitude must be numbers and radius must be a positive number',
+                    data: null
+                });
+                return;
+            }
+            const services = await this.serviceService.findNearbyServices(latNum, lonNum, radiusNum);
+            sendResponse(res, {
+                statusCode: 200,
+                success: true,
+                message: 'Nearby services fetched successfully',
+                data: services
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
