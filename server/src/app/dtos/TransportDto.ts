@@ -1,5 +1,3 @@
-import { CreateServiceDto } from "./ServiceDto.js";
-
 export interface TransportCreateDto {
     service_id: string;
     mode: string; 

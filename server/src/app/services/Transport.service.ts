@@ -1,48 +1,21 @@
 import { Transport, TransportCreateDto, TransportUpdateDto } from '../dtos/TransportDto.js';
-import { CreateServiceDto } from '../dtos/ServiceDto.js';
 import { ITransportRepository } from '../interfaces/ITransportRepository.js';
-import { ServiceService } from './Service.service.js';
 import { AppError } from '../middlewares/error.middleware.js';
 import { validateCreateTransport, validateUpdateTransport } from '../validations/transport.validation.js';
-import { validateService } from '../validations/Service.validation.js';
 
 export class TransportService {
-    constructor(private transportRepository: ITransportRepository,
-        private serviceService: ServiceService
-    ) { }
+    constructor(private transportRepository: ITransportRepository) {}
 
-    async createTransport(data: TransportCreateDto, serviceData?: CreateServiceDto): Promise<Transport> {
-        let service_id = data.service_id;
-
-        if (!service_id) {
-            if (!serviceData) {
-                throw new AppError('Service ID or Service object is required', 400);
-            }
-
-            const validationResult = validateService(serviceData);
-            if (!validationResult.valid) {
-                throw new AppError(validationResult.errors.join(', '), 400);
-            }
-
-            // first create the service
-            const service = await this.serviceService.createService({
-                ...serviceData,
-                type: 'Transport',
-            });
-
-            service_id = service.service_id;
+    async createTransport(data: TransportCreateDto): Promise<Transport> {
+        if (!data.service_id) {
+            throw new AppError('service_id is required to create a transport', 400);
         }
 
         const errors = validateCreateTransport(data);
         if (errors.length) throw new AppError(errors.join(', '), 400);
 
-        // now can create the transport
-        const transportData: TransportCreateDto = {
-            ...data,
-            service_id: service_id,
-        };
+        const transport = await this.transportRepository.createTransport(data);
 
-        const transport = await this.transportRepository.createTransport(transportData);
         return transport;
     }
 
@@ -59,8 +32,10 @@ export class TransportService {
     async updateTransport(service_id: string, data: TransportUpdateDto): Promise<Transport> {
         const errors = validateUpdateTransport(data);
         if (errors.length) throw new AppError(errors.join(', '), 400);
+
         const transport = await this.transportRepository.updateTransport(service_id, data);
         if (!transport) throw new AppError('Transport not found', 404);
+        
         return transport;
     }
 
