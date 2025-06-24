@@ -23,7 +23,7 @@ export class NotificationService {
 
     async getUserNotifications(userId: number, authUser: AuthUser): Promise<Notification[]> {
         const validUserId = validateUserId(userId);
-        if (authUser.user_id !== validUserId && authUser.role !== 'admin') {
+        if (Number(authUser.user_id) !== Number(validUserId) && authUser.role !== 'admin') {
             throw new AppError('Forbidden: You are not allowed to view these notifications', 403);
         }
         return this.notificationRepository.getUserNotifications(validUserId);
