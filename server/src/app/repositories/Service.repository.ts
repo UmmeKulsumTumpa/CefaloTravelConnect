@@ -35,4 +35,9 @@ export class ServiceRepository {
         if (filters.address) query = query.where('address', 'ilike', `%${filters.address}%`);
         return await query.orderBy('created_at', 'desc');
     }
+
+    async findByIds(service_ids: string[]): Promise<ServiceEntity[]> {
+        if (!service_ids.length) return [];
+        return this.db('services').whereIn('service_id', service_ids).orderBy('created_at', 'desc');
+    }
 }

@@ -44,4 +44,5 @@ export interface IServiceRepository {
     findAll(filters?: Partial<ServiceResponseDto>): Promise<ServiceResponseDto[]>;
     update(service_id: string, data: UpdateServiceDto): Promise<ServiceResponseDto | undefined>;
     delete(service_id: string): Promise<number>;
+    findByIds(service_ids: string[]): Promise<ServiceResponseDto[]>;
 }

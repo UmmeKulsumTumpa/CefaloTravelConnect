@@ -47,8 +47,11 @@ export class ServiceService {
         if (!service) throw new AppError('Service not found', 404);
         let response = this.toServiceResponseDto(service);
         if (response.type === 'Transport') {
-            const transport = await this.transportService.getTransportById(service_id);
-            return { ...response, transport };
+            const transportExists = await this.transportService.getTransportIfExists(service_id);
+            if (transportExists) {
+                return { ...response, transport: transportExists };
+            }
+            return response;
         }
         return response;
     }
@@ -59,17 +62,34 @@ export class ServiceService {
         const validation = validateServiceUpdate(data);
         if (!validation.valid) throw new AppError(validation.errors.join(', '), 400);
         const { transport, ...serviceData } = data;
+
+        const filteredServiceData: ServiceUpdateDB = {};
+        const keys: (keyof ServiceUpdateDB)[] = ['name', 'type', 'latitude', 'longitude', 'address', 'description'];
+        for (const key of keys) {
+            const value = serviceData[key];
+            if (typeof value !== 'undefined') {
+                (filteredServiceData as any)[key] = value;
+            }
+        }
+
+        let updatedService: ServiceEntity | undefined = undefined;
+        if (Object.keys(filteredServiceData).length > 0) {
+            updatedService = await this.serviceRepository.update(service_id, filteredServiceData as ServiceUpdateDB);
+            if (!updatedService) throw new AppError('Failed to update service', 500);
+        } else {
+            updatedService = await this.serviceRepository.findById(service_id);
+        }
+
+        let response = this.toServiceResponseDto(updatedService!);
+
         if (service.type === 'Transport' && transport) {
             const transportValidation = validateUpdateTransport(transport);
             if (transportValidation.length) throw new AppError(transportValidation.join(', '), 400);
             await this.transportService.updateTransport(service_id, transport);
-        }
-        const updated = await this.serviceRepository.update(service_id, serviceData as ServiceUpdateDB);
-        if (!updated) throw new AppError('Failed to update service', 500);
-        let response = this.toServiceResponseDto(updated);
-        if (response.type === 'Transport') {
-            const transportDetails = await this.transportService.getTransportById(service_id);
-            return { ...response, transport: transportDetails };
+            const transportDetails = await this.transportService.getTransportIfExists(service_id);
+            if (transportDetails) {
+                return { ...response, transport: transportDetails };
+            }
         }
         return response;
     }
@@ -85,14 +105,33 @@ export class ServiceService {
         return deleted;
     }
 
-    async getAll(filters: ServiceFilter = {}): Promise<ServiceResponseDto[]> {
-        const services = await this.serviceRepository.findAll(filters);
+    async getAll(filters: ServiceFilter & { mode?: string; operator?: string } = {}): Promise<ServiceResponseDto[]> {
+        const { mode, operator, ...serviceFilters } = filters;
+        let serviceIds: string[] | undefined = undefined;
+        if (mode || operator) {
+            const transportQuery: any = {};
+            if (mode) transportQuery.mode = mode;
+            if (operator) transportQuery.operator = operator;
+            const transports = await this.transportService.searchTransports(transportQuery);
+            serviceIds = transports.map(t => t.service_id);
+            if (serviceIds.length === 0) return [];
+        }
+        let services: ServiceEntity[];
+        if (serviceIds) {
+            services = await this.serviceRepository.findByIds(serviceIds);
+        } else {
+            services = await this.serviceRepository.findAll(serviceFilters);
+        }
         const results: ServiceResponseDto[] = [];
         for (const service of services) {
             let response = this.toServiceResponseDto(service);
             if (response.type === 'Transport') {
-                const transport = await this.transportService.getTransportById(service.service_id);
-                results.push({ ...response, transport });
+                const transport = await this.transportService.getTransportIfExists(service.service_id);
+                if (transport) {
+                    results.push({ ...response, transport });
+                } else {
+                    results.push(response);
+                }
             } else {
                 results.push(response);
             }
