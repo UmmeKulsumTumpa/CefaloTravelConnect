@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { TravelPlanService } from "../services/TravelPlanService.service.js";
-import { AddPlanServiceDto } from "../dtos/TravelPlanDto.js";
+import { TravelPlanServiceUnifiedDTO } from "../dtos/TravelPlanDto.js";
 import sendResponse from "../utils/sendResponse.js";
 
 export class TravelPlanServiceController {
@@ -18,7 +18,7 @@ export class TravelPlanServiceController {
         }
 
         const plan_id = req.params.plan_id;
-        const addPlanServiceDto: AddPlanServiceDto = {
+        const addPlanServiceDto: TravelPlanServiceUnifiedDTO = {
             ...req.body,
             plan_id
         };
@@ -35,7 +35,7 @@ export class TravelPlanServiceController {
     async getPlanServices(req: Request, res: Response) {
         const services = await this.travelPlanService.getPlanServices(req.params.plan_id);
 
-        if( !services || services.length === 0){
+        if (!services || services.length === 0) {
             return sendResponse(res, {
                 statusCode: 404,
                 success: false,
@@ -49,6 +49,51 @@ export class TravelPlanServiceController {
             success: true,
             message: "Plan services retrieved successfully",
             data: services
+        });
+    }
+
+    async getPlanService(req: Request, res: Response) {
+        const plan_id = req.params.plan_id;
+        const service_id = req.params.service_id;
+        const service = await this.travelPlanService.getPlanService(plan_id, service_id);
+        if (!service) {
+            return sendResponse(res, {
+                statusCode: 404,
+                success: false,
+                message: "Service not found",
+                data: null
+            });
+        }
+        return sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: "Plan service retrieved successfully",
+            data: service
+        });
+    }
+
+    async updatePlanService(req: Request, res: Response) {
+        const plan_id = req.params.plan_id;
+        const service_id = req.params.service_id;
+        const updateDto: TravelPlanServiceUnifiedDTO = { ...req.body, plan_id };
+        const updated = await this.travelPlanService.updatePlanService(plan_id, service_id, updateDto);
+        return sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: "Plan service updated successfully",
+            data: updated
+        });
+    }
+
+    async deletePlanService(req: Request, res: Response) {
+        const plan_id = req.params.plan_id;
+        const service_id = req.params.service_id;
+        await this.travelPlanService.deletePlanService(plan_id, service_id);
+        return sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: "Plan service deleted successfully",
+            data: null
         });
     }
 }

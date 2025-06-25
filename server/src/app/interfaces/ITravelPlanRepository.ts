@@ -1,5 +1,5 @@
 // ITravelPlanRepository.ts
-import { CreateTravelPlanDto, UpdateTravelPlanDto, AddPlanServiceDto, AddPlanTransportDto, AddPlannedPlaceDto, AddPlanParticipantDto, AddPlanCommentDto } from '../dtos/TravelPlanDto.js';
+import { CreateTravelPlanDto, UpdateTravelPlanDto, AddPlannedPlaceDto, AddPlanParticipantDto, AddPlanCommentDto, TravelPlanServiceDetailDTO, TravelPlanTransportDetailDTO } from '../dtos/TravelPlanDto.js';
 import { TravelPlanStatus, VisitPriority, ParticipantRole } from '../constants/TravelPlan.constant.js';
 
 export interface TravelPlan {
@@ -71,8 +71,18 @@ export interface ITravelPlanRepository {
     getAllTravelPlans(filters: { user_id?: number; name?: string }): Promise<TravelPlan[]>;
     deleteTravelPlan(plan_id: string): Promise<number>;
 
-    addPlanService(data: AddPlanServiceDto): Promise<PlanService>;
+    addPlanService(data: TravelPlanServiceDetailDTO): Promise<PlanService>;
+    getPlanService(plan_id: string, service_id: string): Promise<PlanService | null>;
+    updatePlanService(plan_id: string, service_id: string, data: TravelPlanServiceDetailDTO): Promise<PlanService>;
+    deletePlanService(plan_id: string, service_id: string): Promise<number>;
+
+    addPlanTransport(data: TravelPlanTransportDetailDTO): Promise<PlanTransport>;
+    getPlanTransport(plan_id: string, service_id: string): Promise<PlanTransport | null>;
+    updatePlanTransport(plan_id: string, service_id: string, data: TravelPlanTransportDetailDTO): Promise<PlanTransport>;
+    deletePlanTransport(plan_id: string, service_id: string): Promise<number>;
+
     getPlanServices(plan_id: string): Promise<PlanService[]>;
+    getPlanTransports(plan_id: string): Promise<PlanTransport[]>;
 
     addPlannedPlace(data: AddPlannedPlaceDto): Promise<PlannedPlace>;
     getPlannedPlaces(plan_id: string): Promise<PlannedPlace[]>;
@@ -85,9 +95,6 @@ export interface ITravelPlanRepository {
 
     addPlanComment(data: AddPlanCommentDto): Promise<PlanComment>;
     getPlanComments(plan_id: string): Promise<PlanComment[]>;
-
-    addPlanTransport(data: AddPlanTransportDto): Promise<PlanTransport>;
-    getPlanTransports(plan_id: string): Promise<PlanTransport[]>;
 
     // upvotePlan(plan_id: string, user_id: number): Promise<void>;
     // downvotePlan(plan_id: string, user_id: number): Promise<void>;

@@ -11,7 +11,6 @@ import TravelPlanServiceRouter from './TravelPlanService.router.js';
 import PlanParticipantRouter from './PlanParticipant.router.js';
 import { UserRepository } from '../repositories/User.repository.js';
 import { UserService } from '../services/User.service.js';
-import TravelPlanTransportRouter from './TravelPlanTransport.router.js';
 
 const router = express.Router();
 
@@ -64,7 +63,7 @@ router.get(
     asyncHandler(travelPlanController.getPlanComments.bind(travelPlanController))
 );
 
-// plan participants, places, services and transports routers
+// plan participants, places, and services routers
 router.use(
     '/:plan_id/participants',
     PlanParticipantRouter
@@ -78,11 +77,6 @@ router.use(
 router.use(
     '/:plan_id/services',
     TravelPlanServiceRouter
-);
-
-router.use(
-    '/:plan_id/transports',
-    TravelPlanTransportRouter
 );
 
 export default router;

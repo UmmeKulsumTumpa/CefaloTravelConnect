@@ -23,4 +23,16 @@ router.get(
     asyncHandler(travelPlanServiceController.getPlanServices.bind(travelPlanServiceController))
 );
 
+router.patch(
+    '/:service_id',
+    authenticationMiddleware,
+    asyncHandler(travelPlanServiceController.updatePlanService.bind(travelPlanServiceController))
+);
+
+router.delete(
+    '/:service_id',
+    authenticationMiddleware,
+    asyncHandler(travelPlanServiceController.deletePlanService.bind(travelPlanServiceController))
+);
+
 export default router;

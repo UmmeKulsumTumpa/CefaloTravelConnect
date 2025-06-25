@@ -1,7 +1,7 @@
 // TravelPlan.repository.ts
 import { Knex } from 'knex';
-import { CreateTravelPlanDto, UpdateTravelPlanDto, AddPlannedPlaceDto, AddPlanServiceDto, AddPlanParticipantDto, AddPlanCommentDto, AddPlanTransportDto } from '../dtos/TravelPlanDto.js';
-import { TravelPlan, ITravelPlanRepository, PlannedPlace, PlanService, PlanParticipant, PlanComment, PlanTransport } from '../interfaces/ITravelPlanRepository.js';
+import { CreateTravelPlanDto, UpdateTravelPlanDto, AddPlannedPlaceDto, AddPlanParticipantDto, AddPlanCommentDto, TravelPlanServiceUnifiedDTO, TravelPlanServiceDetailDTO, TravelPlanTransportDetailDTO } from '../dtos/TravelPlanDto.js';
+import { TravelPlan, PlannedPlace, PlanParticipant, PlanComment, PlanService, PlanTransport, ITravelPlanRepository } from '../interfaces/ITravelPlanRepository.js';
 
 export class TravelPlanRepository implements ITravelPlanRepository {
     constructor(private knex: Knex) { }
@@ -48,14 +48,26 @@ export class TravelPlanRepository implements ITravelPlanRepository {
     }
 
     // service methods
-    async addPlanService(data: AddPlanServiceDto): Promise<PlanService> {
+    async addPlanService(data: TravelPlanServiceDetailDTO): Promise<PlanService> {
         const [service] = await this.knex<PlanService>('plan_services').insert(data).returning('*');
         return service;
     }
 
+    async getPlanService(plan_id: string, service_id: string): Promise<PlanService | null> {
+        return (await this.knex<PlanService>('plan_services').where({ plan_id, service_id }).first()) || null;
+    }
+
+    async updatePlanService(plan_id: string, service_id: string, data: TravelPlanServiceDetailDTO): Promise<PlanService> {
+        const [service] = await this.knex<PlanService>('plan_services').where({ plan_id, service_id }).update(data).returning('*');
+        return service;
+    }
+
+    async deletePlanService(plan_id: string, service_id: string): Promise<number> {
+        return this.knex<PlanService>('plan_services').where({ plan_id, service_id }).del();
+    }
+
     async getPlanServices(plan_id: string): Promise<PlanService[]> {
-        const services = await this.knex<PlanService>('plan_services').where({ plan_id });
-        return services;
+        return this.knex<PlanService>('plan_services').where({ plan_id });
     }
 
     // plan_participants methods
@@ -97,9 +109,22 @@ export class TravelPlanRepository implements ITravelPlanRepository {
     }
 
     // travel plan transports methods
-    async addPlanTransport(data: AddPlanTransportDto): Promise<PlanTransport> {
+    async addPlanTransport(data: TravelPlanTransportDetailDTO): Promise<PlanTransport> {
         const [transport] = await this.knex<PlanTransport>('plan_transports').insert(data).returning('*');
         return transport;
+    }
+
+    async getPlanTransport(plan_id: string, service_id: string): Promise<PlanTransport | null> {
+        return (await this.knex<PlanTransport>('plan_transports').where({ plan_id, service_id }).first()) || null;
+    }
+
+    async updatePlanTransport(plan_id: string, service_id: string, data: TravelPlanTransportDetailDTO): Promise<PlanTransport> {
+        const [transport] = await this.knex<PlanTransport>('plan_transports').where({ plan_id, service_id }).update(data).returning('*');
+        return transport;
+    }
+
+    async deletePlanTransport(plan_id: string, service_id: string): Promise<number> {
+        return this.knex<PlanTransport>('plan_transports').where({ plan_id, service_id }).del();
     }
 
     async getPlanTransports(plan_id: string): Promise<PlanTransport[]> {
