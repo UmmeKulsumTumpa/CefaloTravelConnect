@@ -11,6 +11,7 @@ import TravelPlanServiceRouter from './TravelPlanService.router.js';
 import PlanParticipantRouter from './PlanParticipant.router.js';
 import { UserRepository } from '../repositories/User.repository.js';
 import { UserService } from '../services/User.service.js';
+import TravelPlanTransportRouter from './TravelPlanTransport.router.js';
 
 const router = express.Router();
 
@@ -77,6 +78,11 @@ router.use(
 router.use(
     '/:plan_id/services',
     TravelPlanServiceRouter
+);
+
+router.use(
+    '/:plan_id/transports',
+    TravelPlanTransportRouter
 );
 
 export default router;

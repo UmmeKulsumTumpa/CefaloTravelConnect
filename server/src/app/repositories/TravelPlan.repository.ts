@@ -1,7 +1,7 @@
 // TravelPlan.repository.ts
 import { Knex } from 'knex';
-import { CreateTravelPlanDto, UpdateTravelPlanDto, AddPlannedPlaceDto, AddPlanServiceDto, AddPlanParticipantDto, AddPlanCommentDto } from '../dtos/TravelPlanDto.js';
-import { TravelPlan, ITravelPlanRepository, PlannedPlace, PlanService, PlanParticipant, PlanComment } from '../interfaces/ITravelPlanRepository.js';
+import { CreateTravelPlanDto, UpdateTravelPlanDto, AddPlannedPlaceDto, AddPlanServiceDto, AddPlanParticipantDto, AddPlanCommentDto, AddPlanTransportDto } from '../dtos/TravelPlanDto.js';
+import { TravelPlan, ITravelPlanRepository, PlannedPlace, PlanService, PlanParticipant, PlanComment, PlanTransport } from '../interfaces/ITravelPlanRepository.js';
 
 export class TravelPlanRepository implements ITravelPlanRepository {
     constructor(private knex: Knex) { }
@@ -94,5 +94,15 @@ export class TravelPlanRepository implements ITravelPlanRepository {
     async getPlanComments(plan_id: string): Promise<PlanComment[]> {
         const comments = await this.knex<PlanComment>('plan_comments').where({ plan_id });
         return comments;
+    }
+
+    // travel plan transports methods
+    async addPlanTransport(data: AddPlanTransportDto): Promise<PlanTransport> {
+        const [transport] = await this.knex<PlanTransport>('plan_transports').insert(data).returning('*');
+        return transport;
+    }
+
+    async getPlanTransports(plan_id: string): Promise<PlanTransport[]> {
+        return this.knex<PlanTransport>('plan_transports').where({ plan_id });
     }
 }
