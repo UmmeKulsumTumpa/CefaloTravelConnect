@@ -37,5 +37,5 @@ export interface ServiceResponseDto {
     address?: string;
     description?: string;
     created_at: string;
-    transport?: Transport;
+    transport?: Transport | null;
 }

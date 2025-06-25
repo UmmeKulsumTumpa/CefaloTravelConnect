@@ -21,6 +21,15 @@ export class ServiceService {
         };
     }
 
+    public async buildServiceResponseWithTransport(service: ServiceEntity): Promise<ServiceResponseDto> {
+        const response = this.toServiceResponseDto(service);
+        if (response.type === 'Transport') {
+            const transport = await this.transportService.getTransportIfExists(service.service_id);
+            return { ...response, transport: transport ?? null };
+        }
+        return response;
+    }
+
     async createService(data: ServiceCreateRequestDto): Promise<ServiceResponseDto> {
         const validation = validateService(data);
         if (!validation.valid) throw new AppError(validation.errors.join(', '), 400);
@@ -39,21 +48,14 @@ export class ServiceService {
             const transportDetails = await this.transportService.getTransportById(response.service_id);
             return { ...response, transport: transportDetails };
         }
-        return response;
+        // Use builder for consistent response
+        return await this.buildServiceResponseWithTransport(service);
     }
 
     async getServiceById(service_id: string): Promise<ServiceResponseDto | undefined> {
         const service = await this.serviceRepository.findById(service_id);
         if (!service) throw new AppError('Service not found', 404);
-        let response = this.toServiceResponseDto(service);
-        if (response.type === 'Transport') {
-            const transportExists = await this.transportService.getTransportIfExists(service_id);
-            if (transportExists) {
-                return { ...response, transport: transportExists };
-            }
-            return response;
-        }
-        return response;
+        return await this.buildServiceResponseWithTransport(service);
     }
 
     async updateService(service_id: string, data: ServiceUpdateRequestDto): Promise<ServiceResponseDto | undefined> {
@@ -91,7 +93,8 @@ export class ServiceService {
                 return { ...response, transport: transportDetails };
             }
         }
-        return response;
+        
+        return await this.buildServiceResponseWithTransport(updatedService!);
     }
 
     async deleteService(service_id: string): Promise<number> {
@@ -124,17 +127,7 @@ export class ServiceService {
         }
         const results: ServiceResponseDto[] = [];
         for (const service of services) {
-            let response = this.toServiceResponseDto(service);
-            if (response.type === 'Transport') {
-                const transport = await this.transportService.getTransportIfExists(service.service_id);
-                if (transport) {
-                    results.push({ ...response, transport });
-                } else {
-                    results.push(response);
-                }
-            } else {
-                results.push(response);
-            }
+            results.push(await this.buildServiceResponseWithTransport(service));
         }
         return results;
     }
@@ -144,17 +137,7 @@ export class ServiceService {
         const nearby = await this.serviceRepository.findNearby(latitude, longitude, radiusMeters);
         const results: ServiceResponseDto[] = [];
         for (const service of nearby) {
-            let response = this.toServiceResponseDto(service);
-            if (response.type === 'Transport') {
-                const transport = await this.transportService.getTransportIfExists(service.service_id);
-                if (transport) {
-                    results.push({ ...response, transport });
-                } else {
-                    results.push(response);
-                }
-            } else {
-                results.push(response);
-            }
+            results.push(await this.buildServiceResponseWithTransport(service));
         }
         return results;
     }
