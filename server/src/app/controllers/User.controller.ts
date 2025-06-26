@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { UserService } from "../services/User.service.js";
-import { SignupDto, UpdateUserDto, ChangePasswordDto } from "../interfaces/UserDto.js";
+import { SignupDto, UpdateUserDto, ChangePasswordDto } from "../dtos/UserDto.js";
 import sendResponse from '../utils/sendResponse.js';
 
 export class UserController {

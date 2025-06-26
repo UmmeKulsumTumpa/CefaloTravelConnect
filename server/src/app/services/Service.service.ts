@@ -48,7 +48,7 @@ export class ServiceService {
             const transportDetails = await this.transportService.getTransportById(response.service_id);
             return { ...response, transport: transportDetails };
         }
-        // Use builder for consistent response
+        
         return await this.buildServiceResponseWithTransport(service);
     }
 

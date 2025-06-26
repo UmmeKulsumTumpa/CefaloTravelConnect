@@ -1,5 +1,5 @@
 import type { IUserRepository, User, UserFilter } from "../interfaces/IUserRepository.js";
-import type { SignupDto, UpdateUserDto, ChangePasswordDto } from "../interfaces/UserDto.js";
+import type { SignupDto, UpdateUserDto, ChangePasswordDto } from "../dtos/UserDto.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
@@ -25,7 +25,7 @@ export class UserService{
             password_hash: passwordHash,
         });
 
-        // Fetch the user to get the role
+        
         const user = await this.userRepository.findById(userId);
         if (!user || !user.role) {
             throw new Error("User role is not set. Please contact admin.");
