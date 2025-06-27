@@ -9,6 +9,7 @@
     "start": "node dist/server.js",
     "build": "tsc",
     "test": "jest --watch",
+    "test:all": "jest --watchAll",
     "test:coverage": "jest --coverage",
     "knex": "tsx node_modules/.bin/knex",
     "migrate:latest": "NODE_OPTIONS='--loader ts-node/esm' knex migrate:latest --knexfile src/db/knexfile.cjs",
