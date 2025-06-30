@@ -1,42 +1,42 @@
 {
-  "name": "cefalo-travel-connect-app-server",
-  "version": "1.0.0",
-  "type": "module",
-  "description": "Cefalo Travel Connect App Server",
-  "main": "server.ts",
-  "scripts": {
-    "dev": "nodemon --watch src --ext ts --exec \"tsx src/server.ts\"",
-    "start": "node dist/server.js",
-    "build": "tsc",
-    "knex": "tsx node_modules/.bin/knex",
-    "migrate:latest": "NODE_OPTIONS='--loader ts-node/esm' knex migrate:latest --knexfile src/db/knexfile.cjs",
-    "migrate:make": "NODE_OPTIONS='--loader ts-node/esm' knex migrate:make --migrations-directory migrations --knexfile src/db/knexfile.cjs",
-    "migrate:rollback": "NODE_OPTIONS='--loader ts-node/esm' knex migrate:rollback --knexfile src/db/knexfile.cjs",
-    "seed": "NODE_OPTIONS='--loader ts-node/esm' knex seed:run --knexfile src/db/knexfile.cjs"
-  },
-  "keywords": [],
-  "author": "Umme Kulsum Tumpa",
-  "license": "ISC",
-  "dependencies": {
-    "@types/bcryptjs": "^3.0.0",
-    "@types/jsonwebtoken": "^9.0.9",
-    "@types/knex": "^0.16.1",
-    "bcryptjs": "^3.0.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "jsonwebtoken": "^9.0.2",
-    "nodemon": "^3.1.10",
-    "pg": "^8.16.0",
-    "zod": "^3.25.67"
-  },
-  "devDependencies": {
-    "@types/cors": "^2.8.18",
-    "@types/express": "^5.0.2",
-    "@types/node": "^22.15.29",
-    "knex": "^3.1.0",
-    "ts-node": "^10.9.2",
-    "tsx": "^4.20.2",
-    "typescript": "^5.8.3"
-  }
+	"name": "cefalo-travel-connect-app-server",
+	"version": "1.0.0",
+	"type": "module",
+	"description": "Cefalo Travel Connect App Server",
+	"main": "server.ts",
+	"scripts": {
+		"dev": "nodemon --watch src --ext ts --exec \"tsx src/server.ts\"",
+		"start": "node dist/server.js",
+		"build": "tsc",
+		"knex": "tsx node_modules/.bin/knex",
+		"migrate:latest": "NODE_OPTIONS='--loader ts-node/esm' knex migrate:latest --knexfile src/db/knexfile.cjs",
+		"migrate:make": "NODE_OPTIONS='--loader ts-node/esm' knex migrate:make --migrations-directory migrations --knexfile src/db/knexfile.cjs",
+		"migrate:rollback": "NODE_OPTIONS='--loader ts-node/esm' knex migrate:rollback --knexfile src/db/knexfile.cjs",
+		"seed": "NODE_OPTIONS='--loader ts-node/esm' knex seed:run --knexfile src/db/knexfile.cjs"
+	},
+	"keywords": [],
+	"author": "Umme Kulsum Tumpa",
+	"license": "ISC",
+	"dependencies": {
+		"@types/bcryptjs": "^3.0.0",
+		"@types/jsonwebtoken": "^9.0.9",
+		"@types/knex": "^0.16.1",
+		"bcryptjs": "^3.0.2",
+		"cors": "^2.8.5",
+		"dotenv": "^16.5.0",
+		"express": "^5.1.0",
+		"jsonwebtoken": "^9.0.2",
+		"nodemon": "^3.1.10",
+		"pg": "^8.16.0",
+		"zod": "^3.25.67"
+	},
+	"devDependencies": {
+		"@types/cors": "^2.8.18",
+		"@types/express": "^5.0.2",
+		"@types/node": "^22.15.29",
+		"knex": "^3.1.0",
+		"ts-node": "^10.9.2",
+		"tsx": "^4.20.2",
+		"typescript": "^5.8.3"
+	}
 }
