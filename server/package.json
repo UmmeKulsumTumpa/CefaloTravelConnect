@@ -10,6 +10,7 @@
     "build": "tsc",
     "knex": "tsx node_modules/.bin/knex",
     "migrate:latest": "NODE_OPTIONS='--loader ts-node/esm' knex migrate:latest --knexfile ./src/db/knexfile.cjs --cwd ./",
+    "migrate:latest:prod": "NODE_OPTIONS='--loader ts-node/esm' NODE_ENV=production knex migrate:latest --knexfile ./src/db/knexfile.cjs --cwd ./",
     "migrate:make": "NODE_OPTIONS='--loader ts-node/esm' knex migrate:make --migrations-directory ./src/db/migrations --knexfile ./src/db/knexfile.cjs --cwd ./",
     "migrate:rollback": "NODE_OPTIONS='--loader ts-node/esm' knex migrate:rollback --knexfile ./src/db/knexfile.cjs --cwd ./",
     "seed": "NODE_OPTIONS='--loader ts-node/esm' knex seed:run --knexfile ./src/db/knexfile.cjs --cwd ./"

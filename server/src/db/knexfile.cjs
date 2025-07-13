@@ -19,12 +19,28 @@ module.exports = {
     },
     migrations: {
       extension: 'ts',
-      directory: 'migrations',
+      directory: path.resolve(__dirname, 'migrations'),
       tableName: 'migrations_history',
     },
     seeds: {
       extension: 'ts',
-      directory: 'seeds',
+      directory: path.resolve(__dirname, 'seeds'),
+    },
+  },
+  production: {
+    client: 'postgresql',
+    connection: {
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false }
+    },
+    migrations: {
+      extension: 'ts',
+      directory: path.resolve(__dirname, 'migrations'),
+      tableName: 'migrations_history',
+    },
+    seeds: {
+      extension: 'ts',
+      directory: path.resolve(__dirname, 'seeds'),
     },
   },
 };
