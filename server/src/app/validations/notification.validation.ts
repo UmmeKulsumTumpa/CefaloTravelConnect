@@ -1,4 +1,4 @@
-import { NotificationCreateDtoType } from '../dtos/NotificationDto.js';
+import { NotificationCreateDtoType } from '../dtos/notificationDto.js';
 import { AppError } from '../middlewares/error.middleware.js';
 
 export function validateNotificationCreateDto(data: any): NotificationCreateDtoType {
