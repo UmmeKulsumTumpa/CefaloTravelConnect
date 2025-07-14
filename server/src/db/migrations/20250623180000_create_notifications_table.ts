@@ -1,6 +1,7 @@
 import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
+    await knex.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp";');
     await knex.schema.createTable('notifications', (table) => {
         table.uuid('notification_id').primary().defaultTo(knex.raw('uuid_generate_v4()'));
         table.bigint('user_id').notNullable().references('user_id').inTable('users').onDelete('CASCADE');
