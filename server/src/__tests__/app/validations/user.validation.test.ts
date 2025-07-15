@@ -1,4 +1,4 @@
-import { signupSchema, signinSchema, updateUserSchema, changePasswordSchema } from '../../../app/validations/User.validation';
+import { signupSchema, signinSchema, updateUserSchema, changePasswordSchema } from '../../../app/validations/user.validation';
 
 describe('signupSchema', () => {
   it('passes for valid input', () => {

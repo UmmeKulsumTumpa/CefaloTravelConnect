@@ -1,4 +1,4 @@
-import { PostImageService } from '../../../app/services/PostImage.service';
+import { PostImageService } from '../../../app/services/post.image.service';
 
 describe('PostImageService', () => {
     let repo: any;

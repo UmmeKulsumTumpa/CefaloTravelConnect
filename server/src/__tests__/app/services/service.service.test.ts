@@ -1,11 +1,11 @@
 // tests/services/ServiceService.test.ts
 
-import { ServiceService } from '../../../app/services/Service.service';
+import { ServiceService } from '../../../app/services/service.service';
 import { AppError } from '../../../app/middlewares/error.middleware';
-import { validateService, validateServiceUpdate } from '../../../app/validations/Service.validation';
+import { validateService, validateServiceUpdate } from '../../../app/validations/service.validation';
 import { validateCreateTransport, validateUpdateTransport } from '../../../app/validations/transport.validation';
 
-jest.mock('../../../app/validations/Service.validation');
+jest.mock('../../../app/validations/service.validation');
 jest.mock('../../../app/validations/transport.validation');
 
 function makeRepo() {

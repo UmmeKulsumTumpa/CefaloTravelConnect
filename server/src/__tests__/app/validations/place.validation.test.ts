@@ -1,4 +1,4 @@
-import { validatePlaceCreate, validatePlaceUpdate, validatePlaceQuery } from '../../../app/validations/Place.validation';
+import { validatePlaceCreate, validatePlaceUpdate, validatePlaceQuery } from '../../../app/validations/place.validation';
 
 describe('validatePlaceCreate', () => {
   it('returns valid for correct input', () => {

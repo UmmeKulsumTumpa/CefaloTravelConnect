@@ -1,4 +1,4 @@
-import { WishlistValidation } from '../../../app/validations/Wishlist.validation';
+import { WishlistValidation } from '../../../app/validations/wishlist.validation';
 
 describe('WishlistValidation.validateCreate', () => {
   it('returns [] for valid input', () => {

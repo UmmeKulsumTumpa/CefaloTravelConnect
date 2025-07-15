@@ -1,4 +1,4 @@
-import { validateCreatePost, validateUpdatePost } from '../../../app/validations/Post.validation';
+import { validateCreatePost, validateUpdatePost } from '../../../app/validations/post.validation';
 
 describe('validateCreatePost', () => {
   it('returns [] for valid input', () => {

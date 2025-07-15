@@ -1,4 +1,4 @@
-import { TravelPlanService } from '../../../app/services/TravelPlan.service';
+import { TravelPlanService } from '../../../app/services/travelplan.service';
 
 describe('TravelPlanService', () => {
     let repo: any;

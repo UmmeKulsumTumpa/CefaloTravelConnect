@@ -1,6 +1,6 @@
 // tests/services/TransportService.test.ts
 
-import { TransportService } from '../../../app/services/Transport.service';
+import { TransportService } from '../../../app/services/transport.service';
 import { AppError } from '../../../app/middlewares/error.middleware';
 import { validateCreateTransport, validateUpdateTransport } from '../../../app/validations/transport.validation';
 

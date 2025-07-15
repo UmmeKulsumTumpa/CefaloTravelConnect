@@ -1,5 +1,5 @@
-import { UserService } from "../../../app/services/User.service";
-import { ROLES } from "../../../app/constants/User.constant";
+import { UserService } from "../../../app/services/user.service";
+import { ROLES } from "../../../app/constants/user.constant";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";

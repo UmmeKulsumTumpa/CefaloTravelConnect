@@ -15,7 +15,7 @@
 
 // tests/services/WishlistService.test.ts
 
-import { WishlistService } from '../../../app/services/Wishlist.service';
+import { WishlistService } from '../../../app/services/wishlist.service';
 
 function isoDto(wish: any) {
     return {

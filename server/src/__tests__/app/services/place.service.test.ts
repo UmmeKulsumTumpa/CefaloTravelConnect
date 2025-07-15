@@ -1,6 +1,6 @@
-import { PlaceService } from "../../../app/services/Place.service";
+import { PlaceService } from "../../../app/services/place.service";
 import { mockPlaceRepository } from "../../../test-utils/mockPlaceRepository";
-import type { IPlaceRepository } from "../../../app/interfaces/IPlaceRepository";
+import type { IPlaceRepository } from "../../../app/interfaces/place.interface";
 
 describe("PlaceService", () => {
     let placeRepository: ReturnType<typeof mockPlaceRepository>;

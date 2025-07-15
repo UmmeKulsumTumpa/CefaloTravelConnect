@@ -1,4 +1,4 @@
-import { PostServiceService } from '../../../app/services/PostService.service';
+import { PostServiceService } from '../../../app/services/post.service.service';
 
 describe('PostServiceService', () => {
     let repo: any;

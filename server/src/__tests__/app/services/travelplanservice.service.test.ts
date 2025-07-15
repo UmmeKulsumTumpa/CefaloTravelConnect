@@ -1,11 +1,11 @@
-import { TravelPlanService } from '../../../app/services/TravelPlanService.service';
+import { TravelPlanService } from '../../../app/services/travelplan.service.service';
 
-jest.mock('../../../app/validations/TravelPlan.validation', () => ({
+jest.mock('../../../app/validations/travelplan.validation', () => ({
     validatePlanService: jest.fn(() => []),
     validatePlanTransport: jest.fn(() => []),
 }));
 
-const { validatePlanService, validatePlanTransport } = require('../../../app/validations/TravelPlan.validation');
+const { validatePlanService, validatePlanTransport } = require('../../../app/validations/travelplan.validation');
 
 describe('TravelPlanService (plan service)', () => {
     let repo: any;

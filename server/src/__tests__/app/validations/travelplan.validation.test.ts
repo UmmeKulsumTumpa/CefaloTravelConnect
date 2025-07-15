@@ -1,11 +1,11 @@
 import {
   validateCreateTravelPlan,
   validateUpdateTravelPlan,
-} from "../../../app/validations/TravelPlan.validation";
+} from "../../../app/validations/travelplan.validation";
 import {
   validatePlanService,
   validatePlanTransport,
-} from "../../../app/validations/TravelPlan.validation";
+} from "../../../app/validations/travelplan.validation";
 
 describe("validateCreateTravelPlan", () => {
   it("returns [] for valid input", () => {

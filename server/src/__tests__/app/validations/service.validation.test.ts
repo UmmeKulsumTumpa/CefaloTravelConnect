@@ -1,4 +1,4 @@
-import { validateService, validateServiceUpdate } from '../../../app/validations/Service.validation';
+import { validateService, validateServiceUpdate } from '../../../app/validations/service.validation';
 
 jest.mock('../../../app/validations/transport.validation', () => ({
   validateCreateTransport: jest.fn(() => []),
