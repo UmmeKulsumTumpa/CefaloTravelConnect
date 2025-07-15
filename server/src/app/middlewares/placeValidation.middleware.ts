@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { validatePlaceCreate, validatePlaceUpdate, validatePlaceQuery } from '../validations/Place.validation.js';
+import { validatePlaceCreate, validatePlaceUpdate, validatePlaceQuery } from '../validations/place.validation.js';
 
 export function placeCreateValidator(req: Request, res: Response, next: NextFunction): void {
     const result = validatePlaceCreate(req.body);
