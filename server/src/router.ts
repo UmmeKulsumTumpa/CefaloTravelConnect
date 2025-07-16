@@ -1,11 +1,13 @@
 import express from 'express';
-import { UserRouter } from './app/routes/user.router.js';
-import PlaceRouter from './app/routes/place.router.js';
-import WishlistRouter from './app/routes/wishlist.router.js';
-import ServiceRouter from './app/routes/service.router.js';
-import PostRouter from './app/routes/post.router.js';
-import TravelPlanRouter from './app/routes/travelplan.router.js';
-import NotificationRouter from './app/routes/notification.router.js';
+import {
+    UserRouter,
+    PlaceRouter,
+    WishlistRouter,
+    ServiceRouter,
+    PostRouter,
+    TravelPlanRouter,
+    NotificationRouter
+} from './app/routes/index.js';
 
 const router = express.Router();
 

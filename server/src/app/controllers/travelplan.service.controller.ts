@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { TravelPlanService } from "../services/travelplan.service.service.js";
-import { TravelPlanServiceUnifiedDTO } from "../dtos/travelPlanDto.js";
-import sendResponse from "../utils/sendResponse.js";
+import { TravelPlanServices } from "../services/index.js";
+import { TravelPlanServiceUnifiedDTO } from "../dtos/index.js";
+import {sendResponse} from "../utils/index.js";
 
 export class TravelPlanServiceController {
-    constructor(private travelPlanService: TravelPlanService) {}
+    constructor(private travelPlanService: TravelPlanServices) {}
 
     async addPlanService(req: Request, res: Response) {
         const userId = (req as any).user?.user_id;

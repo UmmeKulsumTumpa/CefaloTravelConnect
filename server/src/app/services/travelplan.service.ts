@@ -1,8 +1,7 @@
-import { CreateTravelPlanDto, UpdateTravelPlanDto, AddPlanParticipantDto, AddPlanCommentDto } from '../dtos/travelPlanDto.js';
-import { ITravelPlanRepository, TravelPlan, PlanParticipant, PlanComment } from '../interfaces/travelplan.interface.js';
-import { UserFilter } from '../interfaces/user.interface.js';
-import { UserService } from './user.service.js';
-import { AppError } from '../middlewares/error.middleware.js';
+import { CreateTravelPlanDto, UpdateTravelPlanDto, AddPlanParticipantDto, AddPlanCommentDto } from '../dtos/index.js';
+import { ITravelPlanRepository, TravelPlan, PlanParticipant, PlanComment, UserFilter } from '../interfaces/index.js';
+import { UserService } from './index.js';
+import { AppError } from '../middlewares/index.js';
 
 export class TravelPlanService {
     constructor(private travelPlanRepository: ITravelPlanRepository, private userService: UserService) {}

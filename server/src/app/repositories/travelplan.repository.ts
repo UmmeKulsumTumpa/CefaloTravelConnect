@@ -1,7 +1,7 @@
 // TravelPlan.repository.ts
 import { Knex } from 'knex';
-import { CreateTravelPlanDto, UpdateTravelPlanDto, AddPlannedPlaceDto, AddPlanParticipantDto, AddPlanCommentDto, TravelPlanServiceUnifiedDTO, TravelPlanServiceDetailDTO, TravelPlanTransportDetailDTO } from '../dtos/travelPlanDto.js';
-import { TravelPlan, PlannedPlace, PlanParticipant, PlanComment, PlanService, PlanTransport, ITravelPlanRepository } from '../interfaces/travelplan.interface.js';
+import { CreateTravelPlanDto, UpdateTravelPlanDto, AddPlannedPlaceDto, AddPlanParticipantDto, AddPlanCommentDto, TravelPlanServiceUnifiedDTO, TravelPlanServiceDetailDTO, TravelPlanTransportDetailDTO } from '../dtos/index.js';
+import { TravelPlan, PlannedPlace, PlanParticipant, PlanComment, PlanService, PlanTransport, ITravelPlanRepository } from '../interfaces/index.js';
 
 export class TravelPlanRepository implements ITravelPlanRepository {
     constructor(private knex: Knex) { }

@@ -1,6 +1,6 @@
 import { Knex } from 'knex';
-import { CreatePostDto, UpdatePostDto, AddPostServiceDto, AddPostTransportDto, AddImageDto } from '../dtos/postDto.js';
-import { Post, PostService, PostTransport, Image, IPostRepository, PostFilter, PostServiceFilter, ImageFilter, TransportFilter } from '../interfaces/post.interface.js';
+import { CreatePostDto, UpdatePostDto, AddPostServiceDto, AddPostTransportDto, AddImageDto } from '../dtos/index.js';
+import { Post, PostService, PostTransport, Image, IPostRepository, PostFilter, PostServiceFilter, ImageFilter, TransportFilter } from '../interfaces/index.js';
 
 export class PostRepository implements IPostRepository {
     constructor(private knex: Knex) { }

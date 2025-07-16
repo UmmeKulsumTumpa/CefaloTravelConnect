@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { TravelPlanService } from '../services/travelplan.service.js';
-import sendResponse from '../utils/sendResponse.js';
-import { validateCreateTravelPlan, validateUpdateTravelPlan } from '../validations/travelplan.validation.js';
+import { TravelPlanService } from '../services/index.js';
+import {sendResponse} from '../utils/index.js';
+import { validateCreateTravelPlan, validateUpdateTravelPlan } from '../validations/index.js';
 
 export class TravelPlanController {
     constructor(private travelPlanService: TravelPlanService) {}

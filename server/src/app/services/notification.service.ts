@@ -1,7 +1,7 @@
-import { Notification, NotificationCreateDtoType } from '../dtos/notificationDto.js';
-import { INotificationRepository } from '../interfaces/notification.interface.js';
-import { validateNotificationCreateDto, validateUserId, validateNotificationId } from '../validations/notification.validation.js';
-import { AppError } from '../middlewares/error.middleware.js';
+import { Notification, NotificationCreateDtoType } from '../dtos/index.js';
+import { INotificationRepository } from '../interfaces/index.js';
+import { validateNotificationCreateDto, validateUserId, validateNotificationId } from '../validations/index.js';
+import { AppError } from '../middlewares/index.js';
 
 interface AuthUser {
     user_id: number;

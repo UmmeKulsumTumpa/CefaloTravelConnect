@@ -1,4 +1,4 @@
-import { TransportCreateDto, TransportUpdateDto } from '../dtos/transportDto.js';
+import { TransportCreateDto, TransportUpdateDto } from '../dtos/index.js';
 
 export function validateCreateTransport(data: TransportCreateDto): string[] {
     const errors: string[] = [];

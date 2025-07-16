@@ -1,5 +1,5 @@
-import { AddPostServiceDto } from '../dtos/postDto.js';
-import { IPostRepository, PostService, PostServiceFilter, Post } from '../interfaces/post.interface.js';
+import { AddPostServiceDto } from '../dtos/index.js';
+import { IPostRepository, PostService, PostServiceFilter, Post } from '../interfaces/index.js';
 
 export class PostServiceService {
     constructor(private postRepository: IPostRepository) {}

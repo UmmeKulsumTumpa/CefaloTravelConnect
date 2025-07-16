@@ -1,13 +1,10 @@
 import express from 'express';
-import { PlanParticipantController } from '../controllers/plan.participant.controller.js';
-import { TravelPlanService } from '../services/travelplan.service.js';
-import { TravelPlanRepository } from '../repositories/travelplan.repository.js';
+import { PlanParticipantController } from '../controllers/index.js';
+import { TravelPlanService, UserService  } from '../services/index.js';
+import { TravelPlanRepository, UserRepository } from '../repositories/index.js';
 import db from '../../db/db.js';
-import { optionalAuthentication } from '../middlewares/optionalAuthentication.middleware.js';
-import { asyncHandler } from '../utils/asyncHandler.js';
-import { authenticationMiddleware } from '../middlewares/authentication.middleware.js';
-import { UserRepository } from '../repositories/user.repository.js';
-import { UserService } from '../services/user.service.js';
+import { authenticationMiddleware, optionalAuthentication } from '../middlewares/index.js';
+import { asyncHandler } from '../utils/index.js';
 
 const router = express.Router({ mergeParams: true });
 

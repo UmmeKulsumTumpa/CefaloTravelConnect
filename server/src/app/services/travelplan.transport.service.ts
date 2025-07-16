@@ -1,7 +1,7 @@
-import { AppError } from '../middlewares/error.middleware.js';
-import { TravelPlanTransportDetailDTO } from '../dtos/travelPlanDto.js';
-import { PlanTransport } from '../interfaces/travelplan.interface.js';
-import { TravelPlanRepository } from '../repositories/travelplan.repository.js';
+import { AppError } from '../middlewares/index.js';
+import { TravelPlanTransportDetailDTO } from '../dtos/index.js';
+import { PlanTransport } from '../interfaces/index.js';
+import { TravelPlanRepository } from '../repositories/index.js';
 
 export class TravelPlanTransportService {
     constructor(private travelPlanRepository: TravelPlanRepository) {}

@@ -1,7 +1,7 @@
-import { TravelPlanServiceUnifiedDTO, TravelPlanServiceDetailDTO, TravelPlanTransportDetailDTO } from "../dtos/travelPlanDto.js";
-import { ITravelPlanRepository } from "../interfaces/travelplan.interface.js";
-import { AppError } from '../middlewares/error.middleware.js';
-import { validatePlanService, validatePlanTransport } from '../validations/travelplan.validation.js';
+import { TravelPlanServiceUnifiedDTO, TravelPlanServiceDetailDTO, TravelPlanTransportDetailDTO } from "../dtos/index.js";
+import { ITravelPlanRepository } from "../interfaces/index.js";
+import { AppError } from '../middlewares/index.js';
+import { validatePlanService, validatePlanTransport } from '../validations/index.js';
 
 function hasTransportDetails(details: any): details is TravelPlanTransportDetailDTO {
     return !!details && (
@@ -14,7 +14,7 @@ function hasTransportDetails(details: any): details is TravelPlanTransportDetail
     );
 }
 
-export class TravelPlanService {
+export class TravelPlanServices {
     constructor(private travelPlanRepository: ITravelPlanRepository) {}
 
     async addPlanService(data: TravelPlanServiceUnifiedDTO): Promise<TravelPlanServiceUnifiedDTO> {

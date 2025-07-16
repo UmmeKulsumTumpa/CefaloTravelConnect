@@ -1,11 +1,9 @@
 import express from 'express';
-import { ServiceController } from '../controllers/service.controller.js';
-import { ServiceService } from '../services/service.service.js';
-import { ServiceRepository } from '../repositories/service.repository.js';
-import { TransportRepository } from '../repositories/transport.repository.js';
-import { TransportService } from '../services/transport.service.js';
+import { ServiceController } from '../controllers/index.js';
+import { ServiceService, TransportService } from '../services/index.js';
+import { ServiceRepository, TransportRepository } from '../repositories/index.js';
 import db from '../../db/db.js';
-import { asyncHandler } from '../utils/asyncHandler.js';
+import { asyncHandler } from '../utils/index.js';
 
 const router = express.Router();
 

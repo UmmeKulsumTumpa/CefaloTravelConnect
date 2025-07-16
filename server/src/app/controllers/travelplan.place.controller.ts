@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
-import { TravelPlanPlaceService } from "../services/travelplan.place.service.js";
-import { AddPlannedPlaceDto } from "../dtos/travelPlanDto.js";
-import sendResponse from "../utils/sendResponse.js";
+import { TravelPlanPlaceService } from "../services/index.js";
+import { AddPlannedPlaceDto } from "../dtos/index.js";
+import {sendResponse} from "../utils/index.js";
 
 export class TravelPlanPlaceController {
     constructor(private travelPlanPlaceService: TravelPlanPlaceService) {}

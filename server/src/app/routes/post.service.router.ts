@@ -1,11 +1,10 @@
 import express from 'express';
-import { PostServiceController } from '../controllers/post.service.controller.js';
-import { PostServiceService } from '../services/post.service.service.js';
-import { PostRepository } from '../repositories/post.repository.js';
+import { PostServiceController } from '../controllers/index.js';
+import { PostServiceService } from '../services/index.js';
+import { PostRepository } from '../repositories/index.js';
 import db from '../../db/db.js';
-import { authenticationMiddleware } from '../middlewares/authentication.middleware.js';
-import { asyncHandler } from '../utils/asyncHandler.js';
-import { postAccessGuard } from '../middlewares/postAccessGuard.middleware.js';
+import { authenticationMiddleware, postAccessGuard  } from '../middlewares/index.js';
+import { asyncHandler } from '../utils/index.js';
 
 const router = express.Router({ mergeParams: true });
 

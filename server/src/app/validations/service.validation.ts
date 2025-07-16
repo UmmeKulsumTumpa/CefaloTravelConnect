@@ -1,5 +1,5 @@
-import { ServiceType, ServiceCreateRequestDto, ServiceUpdateRequestDto } from '../dtos/serviceDto.js';
-import { validateCreateTransport, validateUpdateTransport } from './transport.validation.js';
+import { ServiceType, ServiceCreateRequestDto, ServiceUpdateRequestDto } from '../dtos/index.js';
+import { validateCreateTransport, validateUpdateTransport } from './index.js';
 
 const allowedTypes: ServiceType[] = ['Hotel', 'Restaurant', 'Attraction', 'Transport'];
 

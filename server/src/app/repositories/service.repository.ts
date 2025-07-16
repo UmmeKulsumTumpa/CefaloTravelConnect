@@ -1,5 +1,5 @@
 import { Knex } from 'knex';
-import { ServiceCreateDB, ServiceUpdateDB, ServiceEntity, ServiceFilter } from '../interfaces/service.interface.js';
+import { ServiceCreateDB, ServiceUpdateDB, ServiceEntity, ServiceFilter } from '../interfaces/index.js';
 
 export class ServiceRepository {
     private db: Knex;

@@ -1,5 +1,5 @@
-import { AddPlannedPlaceDto } from "../dtos/travelPlanDto.js";
-import { ITravelPlanRepository, PlannedPlace } from "../interfaces/travelplan.interface.js";
+import { AddPlannedPlaceDto } from "../dtos/index.js";
+import { ITravelPlanRepository, PlannedPlace } from "../interfaces/index.js";
 
 export class TravelPlanPlaceService {
     constructor(private travelPlanRepository: ITravelPlanRepository) {}

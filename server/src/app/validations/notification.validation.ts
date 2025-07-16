@@ -1,5 +1,5 @@
-import { NotificationCreateDtoType } from '../dtos/notificationDto.js';
-import { AppError } from '../middlewares/error.middleware.js';
+import { NotificationCreateDtoType } from '../dtos/index.js';
+import { AppError } from '../middlewares/index.js';
 
 export function validateNotificationCreateDto(data: any): NotificationCreateDtoType {
     if (!data || typeof data !== 'object') throw new AppError('Invalid notification data', 400);

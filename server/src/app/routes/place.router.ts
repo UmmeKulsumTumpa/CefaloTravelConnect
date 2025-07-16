@@ -1,10 +1,10 @@
 import express from 'express';
-import { PlaceController } from '../controllers/place.controller.js';
-import { PlaceService } from '../services/place.service.js';
-import { PlaceRepository } from '../repositories/place.repository.js';
+import { PlaceController } from '../controllers/index.js';
+import { PlaceService } from '../services/index.js';
+import { PlaceRepository } from '../repositories/index.js';
 import db from '../../db/db.js';
-import { asyncHandler } from '../utils/asyncHandler.js';
-import { placeCreateValidator, placeUpdateValidator, placeQueryValidator } from '../middlewares/placeValidation.middleware.js';
+import { asyncHandler } from '../utils/index.js';
+import { placeCreateValidator, placeUpdateValidator, placeQueryValidator } from '../middlewares/index.js';
 
 const router = express.Router();
 

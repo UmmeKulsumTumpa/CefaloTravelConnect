@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
-import type { PlaceService } from '../services/place.service.js';
-import sendResponse from '../utils/sendResponse.js';
+import type { PlaceService } from '../services/index.js';
+import {sendResponse} from '../utils/index.js';
 
 export class PlaceController {
     constructor(private placeService: PlaceService) { }

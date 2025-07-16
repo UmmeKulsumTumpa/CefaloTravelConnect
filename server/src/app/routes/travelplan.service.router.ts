@@ -1,15 +1,15 @@
 import express from 'express';
-import { TravelPlanServiceController } from '../controllers/travelplan.service.controller.js';
-import { TravelPlanService } from '../services/travelplan.service.service.js';
-import { TravelPlanRepository } from '../repositories/travelplan.repository.js';
+import { TravelPlanServiceController } from '../controllers/index.js';
+import { TravelPlanServices } from '../services/index.js';
+import { TravelPlanRepository } from '../repositories/index.js';
 import db from '../../db/db.js';
-import { authenticationMiddleware } from '../middlewares/authentication.middleware.js';
-import { asyncHandler } from '../utils/asyncHandler.js';
+import { authenticationMiddleware } from '../middlewares/index.js';
+import { asyncHandler } from '../utils/index.js';
 
 const router = express.Router({ mergeParams: true });
 
 const travelPlanRepository = new TravelPlanRepository(db);
-const travelPlanService = new TravelPlanService(travelPlanRepository);
+const travelPlanService = new TravelPlanServices(travelPlanRepository);
 const travelPlanServiceController = new TravelPlanServiceController(travelPlanService);
 
 router.post(

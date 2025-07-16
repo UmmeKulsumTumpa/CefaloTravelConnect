@@ -1,6 +1,6 @@
 import type { Knex } from 'knex';
-import type { PlaceDto, PlaceFilters } from '../dtos/placeDto.js';
-import type { IPlaceRepository } from '../interfaces/place.interface.js';
+import type { PlaceDto, PlaceFilters } from '../dtos/index.js';
+import type { IPlaceRepository } from '../interfaces/index.js';
 
 export class PlaceRepository implements IPlaceRepository {
     constructor(private knex: Knex) { }

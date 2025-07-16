@@ -1,5 +1,5 @@
-import { AddImageDto } from '../dtos/postDto.js';
-import { IPostRepository, Image, Post } from '../interfaces/post.interface.js';
+import { AddImageDto } from '../dtos/index.js';
+import { IPostRepository, Image, Post } from '../interfaces/index.js';
 
 export class PostImageService {
     constructor(private postRepository: IPostRepository) {}

@@ -1,5 +1,5 @@
-import { CreateTravelPlanDto, UpdateTravelPlanDto, TravelPlanServiceDetailDTO, TravelPlanTransportDetailDTO } from '../dtos/travelPlanDto.js';
-import { TRAVEL_PLAN_STATUS } from '../constants/travelPlan.constant.js';
+import { CreateTravelPlanDto, UpdateTravelPlanDto, TravelPlanServiceDetailDTO, TravelPlanTransportDetailDTO } from '../dtos/index.js';
+import { TRAVEL_PLAN_STATUS } from '../constants/index.js';
 
 export function validateCreateTravelPlan(data: CreateTravelPlanDto): string[] {
     const errors: string[] = [];

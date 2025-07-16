@@ -1,13 +1,11 @@
 import express from 'express';
-import { UserController } from '../controllers/user.controller.js';
-import { UserService } from '../services/user.service.js';
-import { UserRepository } from '../repositories/user.repository.js';
+import { UserController } from '../controllers/index.js';
+import { UserService } from '../services/index.js';
+import { UserRepository } from '../repositories/index.js';
 import db from '../../db.js';
-import { authenticationMiddleware } from '../middlewares/authentication.middleware.js';
-import { asyncHandler } from '../utils/asyncHandler.js';
-import { roleMiddleware } from '../middlewares/role.middleware.js';
-import { requestValidationMiddleware } from '../middlewares/requestValidation.middleware.js';
-import { signupSchema, signinSchema, updateUserSchema, changePasswordSchema } from '../validations/user.validation.js';
+import { asyncHandler } from '../utils/index.js';
+import { roleMiddleware, requestValidationMiddleware, authenticationMiddleware } from '../middlewares/index.js';
+import { signupSchema, signinSchema, updateUserSchema, changePasswordSchema } from '../validations/index.js';
 
 const router = express.Router();
 const userRepository = new UserRepository(db);
@@ -68,4 +66,4 @@ router.delete('/:id',
     asyncHandler(userController.deleteUser.bind(userController))
 );
 
-export const UserRouter = router;
+export default router;

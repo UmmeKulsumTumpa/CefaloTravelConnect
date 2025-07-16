@@ -1,10 +1,10 @@
 import express from 'express';
-import { NotificationRepository } from '../repositories/notification.repository.js';
-import { NotificationService } from '../services/notification.service.js';
-import { NotificationController } from '../controllers/notification.controller.js';
+import { NotificationRepository } from '../repositories/index.js';
+import { NotificationService } from '../services/index.js';
+import { NotificationController } from '../controllers/index.js';
 import db from '../../db/db.js';
-import { authenticationMiddleware } from '../middlewares/authentication.middleware.js';
-import { asyncHandler } from '../utils/asyncHandler.js';
+import { authenticationMiddleware } from '../middlewares/index.js';
+import { asyncHandler } from '../utils/index.js';
 
 const router = express.Router();
 

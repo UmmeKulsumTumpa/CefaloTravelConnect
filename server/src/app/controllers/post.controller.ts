@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
-import { PostService } from '../services/post.service.js';
-import { validateCreatePost, validateUpdatePost } from '../validations/post.validation.js';
-import sendResponse from '../utils/sendResponse.js';
-import { POST_VISIBILITY } from '../constants/post.constant.js';
+import { PostService } from '../services/index.js';
+import { validateCreatePost, validateUpdatePost } from '../validations/index.js';
+import {sendResponse} from '../utils/index.js';
+import { POST_VISIBILITY } from '../constants/index.js';
 
 export class PostController {
     constructor(private postService: PostService) {}

@@ -1,5 +1,4 @@
-import { asyncHandler } from '../utils/asyncHandler.js';
-import { CreateWishlistDto, UpdateWishlistDto } from '../dtos/wishlistDto.js';
+import { CreateWishlistDto, UpdateWishlistDto } from '../dtos/index.js';
 
 export class WishlistValidation {
     static validateCreate(data: CreateWishlistDto) {

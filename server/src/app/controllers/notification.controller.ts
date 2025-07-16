@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { NotificationService, MarkAsReadResult } from '../services/notification.service.js';
-import sendResponse from '../utils/sendResponse.js';
+import { NotificationService, MarkAsReadResult } from '../services/index.js';
+import {sendResponse} from '../utils/index.js';
 
 export class NotificationController {
     constructor(private notificationService: NotificationService) { }

@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
-import { UserService } from "../services/user.service.js";
-import { SignupDto, UpdateUserDto, ChangePasswordDto } from "../dtos/userDto.js";
-import sendResponse from '../utils/sendResponse.js';
+import { UserService } from "../services/index.js";
+import { SignupDto, UpdateUserDto, ChangePasswordDto } from "../dtos/index.js";
+import {sendResponse} from '../utils/index.js';
 
 export class UserController {
     constructor (private userService: UserService){};

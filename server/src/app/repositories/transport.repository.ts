@@ -1,5 +1,5 @@
-import { Transport, TransportCreateDto, TransportUpdateDto } from '../dtos/transportDto.js';
-import { ITransportRepository } from '../interfaces/transport.interface.js';
+import { Transport, TransportCreateDto, TransportUpdateDto } from '../dtos/index.js';
+import { ITransportRepository } from '../interfaces/index.js';
 import { AppError } from '../middlewares/error.middleware.js';
 
 export class TransportRepository implements ITransportRepository {

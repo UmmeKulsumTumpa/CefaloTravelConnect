@@ -1,9 +1,9 @@
-import type { IUserRepository, User, UserFilter } from "../interfaces/user.interface.js";
-import type { SignupDto, UpdateUserDto, ChangePasswordDto } from "../dtos/userDto.js";
+import type { IUserRepository, User, UserFilter } from "../interfaces/index.js";
+import type { SignupDto, UpdateUserDto, ChangePasswordDto } from "../dtos/index.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
-import { ROLES } from "../constants/user.constant.js";
+import { ROLES } from "../constants/index.js";
 import config from "../config/app.config.js";
 
 export class UserService{

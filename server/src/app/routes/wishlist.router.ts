@@ -1,11 +1,11 @@
 import express from 'express';
-import { WishlistController } from '../controllers/wishlist.controller.js';
-import { WishlistService } from '../services/wishlist.service.js';
-import { WishlistRepository } from '../repositories/wishlist.repository.js';
+import { WishlistController } from '../controllers/index.js';
+import { WishlistService } from '../services/index.js';
+import { WishlistRepository } from '../repositories/index.js';
 import db from '../../db/db.js';
-import { authenticationMiddleware } from '../middlewares/authentication.middleware.js';
-import { optionalAuthentication } from '../middlewares/optionalAuthentication.middleware.js';
-import { asyncHandler } from '../utils/asyncHandler.js';
+import { authenticationMiddleware } from '../middlewares/index.js';
+import { optionalAuthentication } from '../middlewares/index.js';
+import { asyncHandler } from '../utils/index.js';
 
 const router = express.Router();
 

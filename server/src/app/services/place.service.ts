@@ -1,5 +1,5 @@
-import type { IPlaceRepository } from '../interfaces/place.interface.js';
-import type { PlaceDto } from '../dtos/placeDto.js';
+import type { IPlaceRepository } from '../interfaces/index.js';
+import type { PlaceDto } from '../dtos/index.js';
 
 export class PlaceService {
     constructor(private placeRepository: IPlaceRepository) { }

@@ -1,4 +1,4 @@
-import { POST_EFFORT_LEVELS, POST_VISIBILITY } from '../constants/post.constant.js';
+import { POST_EFFORT_LEVELS, POST_VISIBILITY } from '../constants/index.js';
 
 export function validateCreatePost(body: any): string[] {
     const errors: string[] = [];

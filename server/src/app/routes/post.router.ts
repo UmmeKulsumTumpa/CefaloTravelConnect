@@ -1,13 +1,11 @@
 import express from 'express';
-import { PostController } from '../controllers/post.controller.js';
-import { PostService } from '../services/post.service.js';
-import { PostRepository } from '../repositories/post.repository.js';
+import { PostController } from '../controllers/index.js';
+import { PostService } from '../services/index.js';
+import { PostRepository } from '../repositories/index.js';
 import db from '../../db/db.js';
-import { optionalAuthentication } from '../middlewares/optionalAuthentication.middleware.js';
-import { asyncHandler } from '../utils/asyncHandler.js';
-import { authenticationMiddleware } from '../middlewares/authentication.middleware.js';
-import PostServiceRouter from './post.service.router.js';
-import PostImageRouter from './post.image.router.js';
+import { asyncHandler } from '../utils/index.js';
+import { authenticationMiddleware, optionalAuthentication } from '../middlewares/index.js';
+import {PostServiceRouter, PostImageRouter} from './sub-index.js';
 
 const router = express.Router();
 

@@ -1,17 +1,7 @@
+import type { Wishlist, IWishlistRepository } from '../interfaces/index.js'
 import { Knex } from 'knex';
 
-export interface Wishlist {
-    wishlist_id: string;
-    place_id: string;
-    user_id: string;
-    name: string;
-    region?: string;
-    theme?: string;
-    is_public: boolean;
-    created_at: Date;
-}
-
-export class WishlistRepository {
+export class WishlistRepository implements IWishlistRepository{
     private db: Knex;
     constructor(db: Knex) {
         this.db = db;

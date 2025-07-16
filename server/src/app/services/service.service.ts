@@ -1,10 +1,9 @@
-import { ServiceRepository } from '../repositories/service.repository.js';
-import { ServiceCreateRequestDto, ServiceUpdateRequestDto, ServiceResponseDto } from '../dtos/serviceDto.js';
-import { ServiceCreateDB, ServiceUpdateDB, ServiceEntity, ServiceFilter } from '../interfaces/service.interface.js';
-import { TransportService } from './transport.service.js';
-import { validateService, validateServiceUpdate } from '../validations/service.validation.js';
-import { validateCreateTransport, validateUpdateTransport } from '../validations/transport.validation.js';
-import { AppError } from '../middlewares/error.middleware.js';
+import { ServiceRepository } from '../repositories/index.js';
+import { ServiceCreateRequestDto, ServiceUpdateRequestDto, ServiceResponseDto } from '../dtos/index.js';
+import { ServiceCreateDB, ServiceUpdateDB, ServiceEntity, ServiceFilter } from '../interfaces/index.js';
+import { TransportService } from './index.js';
+import { validateService, validateServiceUpdate, validateCreateTransport, validateUpdateTransport } from '../validations/index.js';
+import { AppError } from '../middlewares/index.js';
 
 export class ServiceService {
     constructor(

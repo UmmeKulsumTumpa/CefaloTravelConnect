@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { PostImageService } from '../services/post.image.service.js';
-import sendResponse from '../utils/sendResponse.js';
+import { PostImageService } from '../services/index.js';
+import {sendResponse} from '../utils/index.js';
 
 export class PostImageController {
     constructor(private postImageService: PostImageService) {}

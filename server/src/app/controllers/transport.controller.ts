@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { TransportService } from '../services/transport.service.js';
-import sendResponse from '../utils/sendResponse.js';
-import { TransportCreateDto, TransportUpdateDto } from '../dtos/transportDto.js';
+import { TransportService } from '../services/index.js';
+import {sendResponse} from '../utils/index.js';
+import { TransportCreateDto, TransportUpdateDto } from '../dtos/index.js';
 
 export class TransportController {
     constructor(private transportService: TransportService) {}

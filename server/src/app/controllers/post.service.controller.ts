@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { PostServiceService } from '../services/post.service.service.js';
-import sendResponse from '../utils/sendResponse.js';
+import { PostServiceService } from '../services/index.js';
+import {sendResponse} from '../utils/index.js';
 
 export class PostServiceController {
     constructor(private postServiceService: PostServiceService) {}

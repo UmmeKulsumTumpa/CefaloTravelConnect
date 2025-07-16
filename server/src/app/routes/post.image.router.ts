@@ -1,11 +1,10 @@
 import express from 'express';
-import { PostImageController } from '../controllers/post.image.controller.js';
-import { PostImageService } from '../services/post.image.service.js';
-import { PostRepository } from '../repositories/post.repository.js';
+import { PostImageController } from '../controllers/index.js';
+import { PostImageService } from '../services/index.js';
+import { PostRepository } from '../repositories/index.js';
 import db from '../../db/db.js';
-import { authenticationMiddleware } from '../middlewares/authentication.middleware.js';
-import { asyncHandler } from '../utils/asyncHandler.js';
-import { postAccessGuard } from '../middlewares/postAccessGuard.middleware.js';
+import { authenticationMiddleware, postAccessGuard  } from '../middlewares/index.js';
+import { asyncHandler } from '../utils/index.js';
 
 const router = express.Router({ mergeParams: true });
 

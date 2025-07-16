@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
-import { WishlistService } from '../services/wishlist.service.js';
-import { WishlistValidation } from '../validations/wishlist.validation.js';
-import sendResponse from '../utils/sendResponse.js';
+import { WishlistService } from '../services/index.js';
+import { WishlistValidation } from '../validations/index.js';
+import {sendResponse} from '../utils/index.js';
 
 export class WishlistController {
     constructor(private wishlistService: WishlistService) {}

@@ -1,10 +1,10 @@
 import express from 'express';
-import { TravelPlanPlaceController } from '../controllers/travelplan.place.controller.js';
-import { TravelPlanPlaceService } from '../services/travelplan.place.service.js';
-import { TravelPlanRepository } from '../repositories/travelplan.repository.js';
+import { TravelPlanPlaceController } from '../controllers/index.js';
+import { TravelPlanPlaceService } from '../services/index.js';
+import { TravelPlanRepository } from '../repositories/index.js';
 import db from '../../db/db.js';
-import { authenticationMiddleware } from '../middlewares/authentication.middleware.js';
-import { asyncHandler } from '../utils/asyncHandler.js';
+import { authenticationMiddleware } from '../middlewares/index.js';
+import { asyncHandler } from '../utils/index.js';
 
 const router = express.Router({ mergeParams: true });
 

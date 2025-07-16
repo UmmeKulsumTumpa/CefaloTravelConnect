@@ -1,5 +1,5 @@
 import type { Knex } from "knex";
-import type { User, UserFilter, IUserRepository } from "../interfaces/user.interface.js";
+import type { User, UserFilter, IUserRepository } from "../interfaces/index.js";
 import { ROLES } from "../constants/user.constant.js";
 
 export class UserRepository implements IUserRepository {

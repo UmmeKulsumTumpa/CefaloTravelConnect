@@ -1,5 +1,5 @@
-import { Notification, NotificationCreateDtoType } from '../dtos/notificationDto.js';
-import { INotificationRepository } from '../interfaces/notification.interface.js';
+import { Notification, NotificationCreateDtoType } from '../dtos/index.js';
+import { INotificationRepository } from '../interfaces/index.js';
 import { AppError } from '../middlewares/error.middleware.js';
 
 export class NotificationRepository implements INotificationRepository {

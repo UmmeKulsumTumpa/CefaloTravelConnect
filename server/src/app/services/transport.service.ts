@@ -1,7 +1,7 @@
-import { Transport, TransportCreateDto, TransportUpdateDto } from '../dtos/transportDto.js';
-import { ITransportRepository } from '../interfaces/transport.interface.js';
-import { AppError } from '../middlewares/error.middleware.js';
-import { validateCreateTransport, validateUpdateTransport } from '../validations/transport.validation.js';
+import { Transport, TransportCreateDto, TransportUpdateDto } from '../dtos/index.js';
+import { ITransportRepository } from '../interfaces/index.js';
+import { AppError } from '../middlewares/index.js';
+import { validateCreateTransport, validateUpdateTransport } from '../validations/index.js';
 
 export class TransportService {
     constructor(private transportRepository: ITransportRepository) {}

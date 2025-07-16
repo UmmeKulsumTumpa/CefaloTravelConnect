@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
-import { ServiceService } from '../services/service.service.js';
-import sendResponse from '../utils/sendResponse.js';
-import { ServiceCreateRequestDto, ServiceUpdateRequestDto } from '../dtos/serviceDto.js';
+import { ServiceService } from '../services/index.js';
+import {sendResponse} from '../utils/index.js';
+import { ServiceCreateRequestDto, ServiceUpdateRequestDto } from '../dtos/index.js';
 
 export class ServiceController {
     constructor(private serviceService: ServiceService) {}

@@ -1,5 +1,5 @@
-import { WishlistRepository } from '../repositories/wishlist.repository.js';
-import { CreateWishlistDto, UpdateWishlistDto, WishlistResponseDto } from '../dtos/wishlistDto.js';
+import { WishlistRepository } from '../repositories/index.js';
+import { CreateWishlistDto, UpdateWishlistDto, WishlistResponseDto } from '../dtos/index.js';
 
 function toWishlistResponseDto(wishlist: any): WishlistResponseDto {
     return {
