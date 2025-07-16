@@ -1,9 +1,9 @@
 // Centralized Knex instance for runtime usage
 import knex, { Knex } from 'knex';
 import config from './knexfile.cjs';
-import envConfig from '../app/config/env.config.js';
+import appConfig from '../app/config/app.config.js';
 
-const environment = envConfig.NODE_ENV;
+const environment = appConfig.NODE_ENV;
 const typedConfig: Record<string, Knex.Config> = config as Record<string, Knex.Config>;
 const knexConfig = typedConfig[environment];
 const db: Knex = knex(knexConfig);

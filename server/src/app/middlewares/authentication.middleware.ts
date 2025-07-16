@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import envConfig from '../config/env.config.js';
+import config from '../config/app.config.js';
 
 export const authenticationMiddleware = (req: Request, res: Response, next: NextFunction): void => {
     const authHeader = req.headers['authorization'];
@@ -12,7 +12,7 @@ export const authenticationMiddleware = (req: Request, res: Response, next: Next
     }
 
     try {
-        const decoded = jwt.verify(token, envConfig.JWT_SECRET as string);
+        const decoded = jwt.verify(token, config.JWT_SECRET as string);
         (req as any).user = decoded;
         next();
     } catch (error) {

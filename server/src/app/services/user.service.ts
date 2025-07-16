@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import bcrypt from "bcryptjs";
 import { ROLES } from "../constants/user.constant.js";
-import authConfig from "../config/auth.config.js";
+import config from "../config/app.config.js";
 
 export class UserService{
 
@@ -33,13 +33,13 @@ export class UserService{
 
         const accessToken = jwt.sign(
             { user_id: String(userId), email, role: user.role },
-            authConfig.JWT_SECRET,
-            { expiresIn: authConfig.JWT_EXPIRATION } as jwt.SignOptions,
+            config.JWT_SECRET,
+            { expiresIn: config.JWT_EXPIRATION } as jwt.SignOptions,
         );
 
         // Generate refresh token
         const refreshToken = crypto.randomBytes(64).toString('hex');
-        const refreshExpires = new Date(Date.now() + authConfig.REFRESH_TOKEN_EXPIRATION_DAYS * 24 * 60 * 60 * 1000);
+        const refreshExpires = new Date(Date.now() + config.REFRESH_TOKEN_EXPIRATION_DAYS * 24 * 60 * 60 * 1000);
         await this.userRepository.saveRefreshToken(userId, refreshToken, refreshExpires);
         return { accessToken, refreshToken };
     }
@@ -62,13 +62,13 @@ export class UserService{
 
         const accessToken = jwt.sign(
             { user_id: String(user.user_id), email: user.email, role: user.role },
-            authConfig.JWT_SECRET,
-            { expiresIn: authConfig.JWT_EXPIRATION } as jwt.SignOptions,
+            config.JWT_SECRET,
+            { expiresIn: config.JWT_EXPIRATION } as jwt.SignOptions,
         );
 
         // Generate refresh token
         const refreshToken = crypto.randomBytes(64).toString('hex');
-        const refreshExpires = new Date(Date.now() + authConfig.REFRESH_TOKEN_EXPIRATION_DAYS * 24 * 60 * 60 * 1000);
+        const refreshExpires = new Date(Date.now() + config.REFRESH_TOKEN_EXPIRATION_DAYS * 24 * 60 * 60 * 1000);
         await this.userRepository.saveRefreshToken(user.user_id, refreshToken, refreshExpires);
         return { accessToken, refreshToken };
     }
@@ -162,14 +162,14 @@ export class UserService{
         
         const accessToken = jwt.sign(
             { user_id: String(user.user_id), email: user.email, role: user.role },
-            authConfig.JWT_SECRET,
-            { expiresIn: authConfig.JWT_EXPIRATION } as jwt.SignOptions,
+            config.JWT_SECRET,
+            { expiresIn: config.JWT_EXPIRATION } as jwt.SignOptions,
         );
         
         await this.userRepository.deleteRefreshToken(refreshToken);
         
         const newRefreshToken = crypto.randomBytes(64).toString('hex');
-        const refreshExpires = new Date(Date.now() + authConfig.REFRESH_TOKEN_EXPIRATION_DAYS * 24 * 60 * 60 * 1000);
+        const refreshExpires = new Date(Date.now() + config.REFRESH_TOKEN_EXPIRATION_DAYS * 24 * 60 * 60 * 1000);
         await this.userRepository.saveRefreshToken(user.user_id, newRefreshToken, refreshExpires);
         return { accessToken, refreshToken: newRefreshToken };
     }
