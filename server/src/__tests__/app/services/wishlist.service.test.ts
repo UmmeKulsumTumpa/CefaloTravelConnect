@@ -13,8 +13,6 @@
  *     • returns array of DTOs with created_at as ISO strings
  */
 
-// tests/services/WishlistService.test.ts
-
 import { WishlistService } from '../../../app/services/wishlist.service';
 
 function isoDto(wish: any) {

@@ -25,7 +25,7 @@ describe('PostController', () => {
 
     const mockPost: Post = {
         post_id: '1',
-        user_id: '1', // Should be string per interface
+        user_id: '1', 
         title: 'Test Post',
         description: 'Test Content',
         total_cost: 100,
@@ -77,7 +77,7 @@ describe('PostController', () => {
             postService.updatePost.mockResolvedValue(mockPost);
             req.params.id = '1';
             req.body = { title: 'Updated Post' };
-            (req as any).user = { user_id: '1' }; // Changed to string to match post.user_id
+            (req as any).user = { user_id: '1' }; 
 
             await controller.updatePost(req, res);
 
@@ -86,15 +86,14 @@ describe('PostController', () => {
         });
 
         it('should handle validation error', async () => {
-            // Ensure validation fails by not providing a post - validation runs first
             req.params.id = '1';
-            req.body = { title: '' }; // Empty title should fail validation
+            req.body = { title: '' }; 
             (req as any).user = { user_id: '1' };
 
             await controller.updatePost(req, res);
 
             // If validation passes, it will hit 404, otherwise 400
-            expect([400, 404]).toContain(res.statusCode); // Accept either status
+            expect([400, 404]).toContain(res.statusCode); 
             expect(res._getJSONData().success).toBe(false);
         });
 
@@ -173,7 +172,7 @@ describe('PostController', () => {
             postService.getPostById.mockResolvedValue(mockPost);
             postService.deletePost.mockResolvedValue(1);
             req.params.id = '1';
-            (req as any).user = { user_id: '1' }; // Changed to string
+            (req as any).user = { user_id: '1' }; 
 
             await controller.deletePost(req, res);
 

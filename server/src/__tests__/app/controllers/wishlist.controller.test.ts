@@ -3,7 +3,6 @@ import { WishlistService } from '../../../app/services/wishlist.service';
 import { WishlistValidation } from '../../../app/validations/wishlist.validation';
 import httpMocks from 'node-mocks-http';
 
-// Mock the validation module
 jest.mock('../../../app/validations/wishlist.validation', () => ({
     WishlistValidation: {
         validateCreate: jest.fn(),
@@ -28,7 +27,6 @@ describe('WishlistController', () => {
         res = httpMocks.createResponse();
         next = jest.fn();
 
-        // Reset validation mocks
         (WishlistValidation.validateCreate as jest.Mock).mockReturnValue([]);
         (WishlistValidation.validateUpdate as jest.Mock).mockReturnValue([]);
     });
@@ -149,7 +147,7 @@ describe('WishlistController', () => {
 
         it('should handle user_id filter with authentication', async () => {
             wishlistService.getAll.mockResolvedValue([mockWishlist]);
-            (req as any).user = { user_id: '1' }; // Changed to string to match user_id query parameter
+            (req as any).user = { user_id: '1' };
             req.query = { user_id: '1' };
 
             await controller.getAll(req, res, next);

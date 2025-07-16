@@ -1,5 +1,3 @@
-// tests/services/ServiceService.test.ts
-
 import { ServiceService } from '../../../app/services/service.service';
 import { AppError } from '../../../app/middlewares/error.middleware';
 import { validateService, validateServiceUpdate } from '../../../app/validations/service.validation';

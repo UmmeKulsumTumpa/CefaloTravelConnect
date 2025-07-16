@@ -242,7 +242,7 @@ describe('TravelPlanController', () => {
 
             await controller.getAllTravelPlans(req, res);
 
-            expect(res.statusCode).toBe(400); // Updated to match actual behavior
+            expect(res.statusCode).toBe(400);
             expect(res._getJSONData().success).toBe(false);
         });
 

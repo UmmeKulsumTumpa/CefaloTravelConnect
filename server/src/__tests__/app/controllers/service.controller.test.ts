@@ -52,7 +52,7 @@ describe('ServiceController', () => {
 
             expect(serviceService.createService).toHaveBeenCalledWith({
                 name: 'Test Service',
-                type: 'Restaurant', // Match what controller actually sends
+                type: 'Restaurant', 
                 latitude: 23.7808,
                 longitude: 90.2792,
                 address: 'Test Address',
@@ -153,12 +153,12 @@ describe('ServiceController', () => {
 
             expect(serviceService.updateService).toHaveBeenCalledWith('1', {
                 name: 'Updated Service',
-                type: 'Hotel', // Match what controller actually sends
+                type: 'Hotel', 
                 latitude: 23.7808,
                 longitude: 90.2792,
                 address: 'Updated Address',
                 description: 'Updated Description',
-                transport: undefined // Add missing transport field
+                transport: undefined 
             });
             expect(res.statusCode).toBe(200);
             expect(res._getJSONData().success).toBe(true);
